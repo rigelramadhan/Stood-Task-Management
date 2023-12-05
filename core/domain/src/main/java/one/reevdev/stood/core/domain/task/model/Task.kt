@@ -7,6 +7,7 @@ data class Task(
     val time: TaskTime,
 )
 data class TaskTime(
+    val fullISOFormat: String,
     val time: String,
     val date: String,
 )
