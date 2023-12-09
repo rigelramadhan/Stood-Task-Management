@@ -38,7 +38,7 @@ fun DetailTaskScreen(
         modifier = modifier,
         topBar = {
             TaskToolbar(
-                title = stringResource(R.string.title_add_task),
+                title = uiState.task?.title.orEmpty(),
                 onBackButtonClick = onNavigateBack,
                 actions = mapOf()
             )

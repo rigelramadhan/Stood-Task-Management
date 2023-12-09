@@ -8,6 +8,7 @@
     <string name="content_description_back_button">Back button</string>
     <string name="content_description_action_button">Action button</string>
     <string name="title_add_task">Add Task</string>
+    <string name="title_task_feature">Stood - Task</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>

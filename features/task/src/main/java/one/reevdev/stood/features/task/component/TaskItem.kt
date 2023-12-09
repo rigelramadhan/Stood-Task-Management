@@ -17,9 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import one.reevdev.stood.ui.theme.StoodTheme
 
 @Composable
 fun TaskItem(
@@ -86,20 +84,6 @@ fun HourAndDateText(
             modifier = Modifier,
             text = date,
             style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
-
-@Preview
-@Composable
-fun TaskItemPreview() {
-    StoodTheme {
-        TaskItem(
-            title = "Do Some Chores",
-            priority = 3,
-            hour = "14:25",
-            date = "27 November 2001",
-            navigateToDetail = {}
         )
     }
 }

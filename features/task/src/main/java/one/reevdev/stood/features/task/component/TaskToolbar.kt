@@ -18,13 +18,13 @@ import one.reevdev.stood.features.task.R
 fun TaskToolbar(
     modifier: Modifier = Modifier,
     title: String = "",
-    onBackButtonClick: () -> Unit,
-    actions: Map<ImageVector, () -> Unit>
+    onBackButtonClick: (() -> Unit)? = null,
+    actions: Map<ImageVector, () -> Unit> = mapOf()
 ) {
     TopAppBar(
         modifier = modifier,
         navigationIcon = {
-            IconButton(onClick = { onBackButtonClick() }) {
+            IconButton(onClick = { onBackButtonClick?.invoke() }) {
                 Icon(
                     imageVector = Icons.Outlined.ArrowBack,
                     contentDescription = stringResource(R.string.content_description_back_button)
