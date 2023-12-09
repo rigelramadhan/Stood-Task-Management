@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title">Title</string>
+    <string name="label_priority">Priority</string>
+    <string name="label_hour">Hour</string>
+    <string name="label_date">Date</string>
+    <string name="action_save_task">Save Task</string>
+    <string name="content_description_back_button">Back button</string>
+    <string name="content_description_action_button">Action button</string>
+    <string name="title_add_task">Add Task</string>
+    <string-array name="task_priorities">
+        <item>Low</item>
+        <item>Normal</item>
+        <item>High</item>
+        <item>Urgent</item>
+        <item>Critical</item>
+    </string-array>
+</resources>

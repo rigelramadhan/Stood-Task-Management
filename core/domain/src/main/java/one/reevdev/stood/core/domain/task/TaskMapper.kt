@@ -31,3 +31,11 @@ fun String.toTaskTime(): TaskTime {
         formattedDate
     )
 }
+
+fun mapToApiString(hour: String, date: String): String {
+    val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    val dateTimeString = "${date}T${hour}:00Z"
+    val outputDate: Date? = outputFormat.parse(dateTimeString)
+
+    return outputDate?.let { outputFormat.format(it) }.orEmpty()
+}
