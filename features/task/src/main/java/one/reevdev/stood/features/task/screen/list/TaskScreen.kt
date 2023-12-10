@@ -53,7 +53,7 @@ fun TaskScreen(
                     ) { _, item ->
                         TaskItem(
                             title = item.title,
-                            priority = item.priority.priorityLevel,
+                            priority = item.priority.priorityLabel,
                             hour = item.time.time,
                             date = item.time.date,
                             navigateToDetail = {

@@ -45,6 +45,7 @@ dependencies {
     implementation(project(mapOf("path" to ":core:domain")))
 
     implementation(libs.hilt)
+    implementation(libs.androidx.material3.android)
     ksp(libs.hiltCompiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -54,7 +55,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+//    implementation("androidx.compose.material3:material3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")

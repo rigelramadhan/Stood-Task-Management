@@ -1,5 +1,6 @@
 package one.reevdev.stood.features.task.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,14 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import one.reevdev.stood.features.task.R
 
 @Composable
 fun TaskItem(
     modifier: Modifier = Modifier,
     title: String,
-    priority: Int,
+    priority: String,
     hour: String,
     date: String,
     navigateToDetail: () -> Unit,
@@ -36,7 +39,7 @@ fun TaskItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = 18.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -55,12 +58,24 @@ fun TaskItem(
                     date = date
                 )
             }
-            Text(
+            Column(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp),
-                text = priority.toString(),
-                style = MaterialTheme.typography.headlineMedium
-            )
+                    .clip(shape = RoundedCornerShape(8.dp))
+                    .background(color = MaterialTheme.colorScheme.surfaceContainer)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier,
+                    text = stringResource(id = R.string.label_priority),
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                )
+                Text(
+                    modifier = Modifier,
+                    text = priority,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
     }
 }

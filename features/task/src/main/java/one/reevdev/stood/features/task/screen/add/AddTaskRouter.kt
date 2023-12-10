@@ -39,9 +39,18 @@ fun AddTaskRouter(
         onPriorityChange = { priority = it },
         onNavigateBack = onNavigateBack,
         onSaveTask = {
-            viewModel.addTask(
-                title, hour, date, priority
-            )
+            if (isDataValid(title, hour, date))
+                viewModel.addTask(
+                    title, hour, date, priority
+                )
         }
     )
+}
+
+fun isDataValid(
+    title: String,
+    hour: String,
+    date: String,
+): Boolean {
+    return title.isNotEmpty() && hour.isNotEmpty() && date.isNotEmpty()
 }

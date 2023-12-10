@@ -100,9 +100,8 @@ fun DetailTaskScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         value = it.priority.priorityLabel,
-                        enabled = false,
                         readOnly = true,
-                        label = { Text(text = stringResource(R.string.label_title)) },
+                        label = { Text(text = stringResource(R.string.label_priority)) },
                         onValueChange = {},
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         shape = RoundedCornerShape(16.dp)
