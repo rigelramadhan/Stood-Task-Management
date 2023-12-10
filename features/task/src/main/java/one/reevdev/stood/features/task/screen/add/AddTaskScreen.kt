@@ -24,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,6 +48,7 @@ import one.reevdev.stood.features.task.component.TimePickerDialog
 fun AddTaskScreen(
     modifier: Modifier = Modifier,
     uiState: AddTaskUiState,
+    snackbarHostState: SnackbarHostState,
     taskPriorityList: Array<String> = stringArrayResource(id = R.array.task_priorities),
     title: String,
     hour: String,
@@ -74,6 +77,7 @@ fun AddTaskScreen(
 
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TaskToolbar(
                 title = stringResource(R.string.title_add_task),

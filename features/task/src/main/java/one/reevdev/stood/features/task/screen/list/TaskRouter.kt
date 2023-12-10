@@ -1,10 +1,11 @@
 package one.reevdev.stood.features.task.screen.list
 
 import android.content.Context
-import android.widget.Toast
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,6 +18,7 @@ fun TaskRouter(
     navigateToAddTask: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(true) {
         viewModel.getTasks()
@@ -24,12 +26,13 @@ fun TaskRouter(
 
     LaunchedEffect(uiState.error) {
         uiState.error?.let {
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+            snackbarHostState.showSnackbar(message = it, withDismissAction = true)
         }
     }
 
     TaskScreen(
         uiState = uiState,
+        snackbarHostState = snackbarHostState,
         navigateToDetail = onTaskClick,
         navigateToAddTask = navigateToAddTask
     )

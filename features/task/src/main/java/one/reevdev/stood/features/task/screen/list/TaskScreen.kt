@@ -14,6 +14,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,11 +30,13 @@ import one.reevdev.stood.features.task.component.TaskToolbar
 fun TaskScreen(
     modifier: Modifier = Modifier,
     uiState: TaskUiState,
+    snackbarHostState: SnackbarHostState,
     navigateToDetail: (id: String) -> Unit,
     navigateToAddTask: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = { TaskToolbar(title = stringResource(R.string.title_task_feature)) }
     ) { innerPadding ->
         uiState.tasks?.let { tasks ->

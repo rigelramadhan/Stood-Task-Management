@@ -18,6 +18,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,12 +35,14 @@ import one.reevdev.stood.features.task.component.TaskToolbar
 fun DetailTaskScreen(
     modifier: Modifier = Modifier,
     uiState: DetailUiState,
+    snackbarHostState: SnackbarHostState,
     onDeleteTask: () -> Unit,
 //    navigateToEdit: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             TaskToolbar(
                 title = uiState.task?.title.orEmpty(),
