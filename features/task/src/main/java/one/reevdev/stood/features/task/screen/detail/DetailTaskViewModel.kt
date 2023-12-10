@@ -1,0 +1,82 @@
+package one.reevdev.stood.features.task.screen.detail
+
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import one.reevdev.stood.core.domain.task.TaskUseCase
+import one.reevdev.stood.core.domain.task.model.Task
+import one.reevdev.stood.features.task.utils.UiState
+import javax.inject.Inject
+
+@HiltViewModel
+class DetailTaskViewModel @Inject constructor(
+    private val taskUseCase: TaskUseCase
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(DetailUiState(false))
+    val uiState: StateFlow<DetailUiState> by lazy { _uiState }
+
+    fun getTaskById(id: String) {
+        _uiState.update { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            taskUseCase.getTaskById(id)
+                .catch {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                        )
+                    }
+                }
+                .collect { task ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = null,
+                            task = task
+                        )
+                    }
+                }
+        }
+    }
+
+    fun deleteTaskById(id: String) {
+        _uiState.update { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            try {
+                taskUseCase.deleteTask(id)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                        isTaskDeleted = true,
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("ADD_TASK", e.message.toString(), e)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                        isTaskDeleted = false,
+                    )
+                }
+            }
+        }
+    }
+}
+
+data class DetailUiState(
+    override val isLoading: Boolean,
+    override val errorMessage: String? = null,
+    val isTaskDeleted: Boolean = false,
+    val task: Task? = null
+) : UiState
