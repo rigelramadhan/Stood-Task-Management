@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -31,6 +33,7 @@ import one.reevdev.stood.features.task.component.TaskToolbar
 fun DetailTaskScreen(
     modifier: Modifier = Modifier,
     uiState: DetailUiState,
+    onDeleteTask: () -> Unit,
 //    navigateToEdit: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
@@ -40,7 +43,9 @@ fun DetailTaskScreen(
             TaskToolbar(
                 title = uiState.task?.title.orEmpty(),
                 onBackButtonClick = onNavigateBack,
-                actions = mapOf()
+                actions = mapOf(
+                    Icons.Outlined.Delete to onDeleteTask
+                )
             )
         }
     ) { innerPadding ->

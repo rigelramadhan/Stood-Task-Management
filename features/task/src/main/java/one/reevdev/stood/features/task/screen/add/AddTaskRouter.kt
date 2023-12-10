@@ -1,6 +1,7 @@
 package one.reevdev.stood.features.task.screen.add
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -15,23 +16,29 @@ fun AddTaskRouter(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var titleState by rememberSaveable { mutableStateOf("") }
-    var hourState by rememberSaveable { mutableStateOf("") }
-    var dateState by rememberSaveable { mutableStateOf("") }
-    var priorityState by rememberSaveable { mutableStateOf(2) }
+    var title by rememberSaveable { mutableStateOf("") }
+    var hour by rememberSaveable { mutableStateOf("") }
+    var date by rememberSaveable { mutableStateOf("") }
+    var priority by rememberSaveable { mutableStateOf(2) }
+
+    LaunchedEffect(uiState.isTaskSaved) {
+        if (uiState.isTaskSaved) {
+            onNavigateBack()
+        }
+    }
 
     AddTaskScreen(
         uiState = uiState,
-        title = titleState,
-        hour = hourState,
-        date = dateState,
-        priority = priorityState,
-        onTitleChange = { titleState = it },
-        onHourChange = { hourState = it },
-        onDateChange = { dateState = it },
-        onPriorityChange = { priorityState = it },
+        title = title,
+        hour = hour,
+        date = date,
+        priority = priority,
+        onTitleChange = { title = it },
+        onHourChange = { hour = it },
+        onDateChange = { date = it },
+        onPriorityChange = { priority = it },
         onNavigateBack = onNavigateBack,
-        onSaveTask = { title, hour, date, priority ->
+        onSaveTask = {
             viewModel.addTask(
                 title, hour, date, priority
             )

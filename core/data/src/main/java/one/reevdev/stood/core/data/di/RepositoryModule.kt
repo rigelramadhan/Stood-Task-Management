@@ -9,7 +9,7 @@ import one.reevdev.stood.core.data.repository.task.TaskRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataModule {
+interface RepositoryModule {
     @Binds
     fun bindsTaskRepository(taskRepository: TaskDatastore): TaskRepository
 }

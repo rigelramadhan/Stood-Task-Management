@@ -14,8 +14,13 @@ fun TaskRouter(
     context: Context = LocalContext.current,
     viewModel: TaskViewModel = hiltViewModel(),
     onTaskClick: (id: String) -> Unit,
+    navigateToAddTask: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        viewModel.getTasks()
+    }
 
     LaunchedEffect(uiState.error) {
         uiState.error?.let {
@@ -25,6 +30,7 @@ fun TaskRouter(
 
     TaskScreen(
         uiState = uiState,
-        navigateToDetail = onTaskClick
+        navigateToDetail = onTaskClick,
+        navigateToAddTask = navigateToAddTask
     )
 }

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import one.reevdev.stood.features.task.navigation.TaskScreens
+import one.reevdev.stood.features.task.navigation.navigateToAddTaskScreen
 import one.reevdev.stood.features.task.navigation.navigateToDetail
 import one.reevdev.stood.features.task.navigation.taskAddTaskScreen
 import one.reevdev.stood.features.task.navigation.taskDetailScreen
@@ -22,7 +23,9 @@ fun StoodApp(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        taskScreen { navController.navigateToDetail(it) }
+        taskScreen(
+            onTaskClick = { navController.navigateToDetail(it) },
+            navigateToAddTask = { navController.navigateToAddTaskScreen() })
         taskDetailScreen { navController.navigateUp() }
         taskAddTaskScreen { navController.navigateUp() }
     }

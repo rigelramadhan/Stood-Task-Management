@@ -1,5 +1,6 @@
 package one.reevdev.stood.features.task.screen.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,10 +46,37 @@ class DetailTaskViewModel @Inject constructor(
                 }
         }
     }
+
+    fun deleteTaskById(id: String) {
+        _uiState.update { it.copy(isLoading = true) }
+
+        viewModelScope.launch {
+            try {
+                taskUseCase.deleteTask(id)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                        isTaskDeleted = true,
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("ADD_TASK", e.message.toString(), e)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                        isTaskDeleted = false,
+                    )
+                }
+            }
+        }
+    }
 }
 
 data class DetailUiState(
     override val isLoading: Boolean,
     override val errorMessage: String? = null,
+    val isTaskDeleted: Boolean = false,
     val task: Task? = null
 ) : UiState

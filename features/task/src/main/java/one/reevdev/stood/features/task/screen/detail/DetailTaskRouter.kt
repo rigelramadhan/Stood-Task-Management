@@ -28,8 +28,15 @@ fun DetailTaskRouter(
         }
     }
 
+    LaunchedEffect(uiState.isTaskDeleted) {
+        if (uiState.isTaskDeleted) {
+            onNavigateBack()
+        }
+    }
+
     DetailTaskScreen(
         uiState = uiState,
+        onDeleteTask = { viewModel.deleteTaskById(taskId) },
         onNavigateBack = onNavigateBack
     )
 }

@@ -39,7 +39,7 @@ fun TaskToolbar(
         },
         actions = {
             actions.forEach {
-                IconButton(onClick = { it.value }) {
+                IconButton(onClick = { it.value() }) {
                     Icon(
                         imageVector = it.key,
                         contentDescription = stringResource(R.string.content_description_action_button)

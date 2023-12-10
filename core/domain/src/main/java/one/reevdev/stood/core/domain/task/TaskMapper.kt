@@ -33,9 +33,11 @@ fun String.toTaskTime(): TaskTime {
 }
 
 fun mapToApiString(hour: String, date: String): String {
-    val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-    val dateTimeString = "${date}T${hour}:00Z"
-    val outputDate: Date? = outputFormat.parse(dateTimeString)
+    val inputFormat = SimpleDateFormat("dd MMMM yyyy'T'HH:mm:ss'Z'", Locale.US)
+    val dateTimeString = "${date}T$hour:00Z"
+    val dateFormat: Date? = inputFormat.parse(dateTimeString)
 
-    return outputDate?.let { outputFormat.format(it) }.orEmpty()
+    val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+
+    return dateFormat?.let { outputFormat.format(it) }.orEmpty()
 }

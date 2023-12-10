@@ -15,11 +15,11 @@ fun NavController.navigateToTask(navOptions: NavOptions? = null) {
     this.navigate(TaskScreens.Task.route, navOptions)
 }
 
-fun NavGraphBuilder.taskScreen(onTaskClick: (id: String) -> Unit) {
+fun NavGraphBuilder.taskScreen(onTaskClick: (id: String) -> Unit, navigateToAddTask: () -> Unit) {
     composable(
         route = TaskScreens.Task.route,
     ) {
-        TaskRouter(onTaskClick = onTaskClick)
+        TaskRouter(onTaskClick = onTaskClick, navigateToAddTask = navigateToAddTask)
     }
 }
 
@@ -30,9 +30,13 @@ fun NavController.navigateToDetail(id: String, navOptions: NavOptions? = null) {
 fun NavGraphBuilder.taskDetailScreen(onNavigateBack: () -> Unit) {
     composable(
         route = TaskScreens.TaskDetail.route,
-        arguments = listOf(navArgument(RouteConstants.ARGUMENT_TASK_ID) {
-            type = NavType.StringType
-        })
+        arguments = listOf(
+            navArgument(
+                RouteConstants.ARGUMENT_TASK_ID
+            ) {
+                type = NavType.StringType
+            }
+        )
     ) {
         val id = it.arguments?.getString(RouteConstants.ARGUMENT_TASK_ID).orEmpty()
 

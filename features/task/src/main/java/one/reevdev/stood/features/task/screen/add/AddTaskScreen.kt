@@ -32,11 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import one.reevdev.stood.features.task.R
 import one.reevdev.stood.features.task.component.TaskToolbar
-import one.reevdev.stood.ui.theme.StoodTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +51,7 @@ fun AddTaskScreen(
     onDateChange: (String) -> Unit,
     onPriorityChange: (Int) -> Unit,
     onNavigateBack: () -> Unit,
-    onSaveTask: (title: String, hour: String, date: String, priority: Int) -> Unit,
+    onSaveTask: () -> Unit,
 ) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
     val priorityLabel = when (priority) {
@@ -152,7 +150,7 @@ fun AddTaskScreen(
                     .fillMaxWidth()
                     .padding(24.dp)
                     .align(Alignment.BottomCenter),
-                onClick = { onSaveTask(title, hour, date, priority) }
+                onClick = onSaveTask
             ) {
                 Text(text = stringResource(R.string.action_save_task))
             }
@@ -166,27 +164,5 @@ fun AddTaskScreen(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AddTaskScreenPreview() {
-    StoodTheme {
-        AddTaskScreen(
-            uiState = AddTaskUiState(false),
-            onNavigateBack = {},
-            title = "",
-            hour = "",
-            date = "",
-            priority = 2,
-            onTitleChange = {},
-            onHourChange = {},
-            onDateChange = {},
-            onPriorityChange = {},
-            onSaveTask = { _, _, _, _ ->
-
-            }
-        )
     }
 }
