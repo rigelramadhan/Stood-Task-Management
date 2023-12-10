@@ -16,5 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "Stood"
 include(":app")
 include(":core")
-include(":features")
 include(":core:domain")
+include(":core:data")
+include(":features:task")
