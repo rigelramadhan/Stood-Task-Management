@@ -10,6 +10,13 @@
     <string name="title_add_task">Add Task</string>
     <string name="title_task_feature">Stood - Task</string>
     <string name="content_description_add_button">Add button</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_pick_time">Pick Time</string>
+    <string name="title_select_time">Select Time</string>
+    <string name="action_pick_a_time">Pick a time</string>
+    <string name="action_pick_a_date">Pick a date</string>
+    <string name="content_description_dropdown_icon">Dropdown Icon</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>
