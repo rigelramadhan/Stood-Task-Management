@@ -18,7 +18,7 @@ fun TaskDatePickerDialog(
 ) {
     val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            return utcTimeMillis <= System.currentTimeMillis()
+            return utcTimeMillis >= System.currentTimeMillis()
         }
     })
 
