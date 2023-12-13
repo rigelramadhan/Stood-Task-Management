@@ -1,6 +1,8 @@
 package one.reevdev.stood.core.domain.task
 
-import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
+import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
+import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
+import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.model.TaskTime
@@ -8,11 +10,24 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun TaskEntity.toDomain(): Task = Task(
+fun TaskWithCategory.toDomain(): Task = Task(
+    id = task.id,
+    title = task.title,
+    priority = TaskPriority.values().first { it.priorityLevel == task.priority },
+    time = task.time.toTaskTime(),
+    category = category.toDomain()
+)
+
+fun CategoryEntity.toDomain(): Category = Category(
     id = id,
-    title = title,
-    priority = TaskPriority.values().first { it.priorityLevel == priority },
-    time = time.toTaskTime()
+    name = name,
+    color = color
+)
+
+fun Category.toEntity(): CategoryEntity = CategoryEntity(
+    id = id,
+    name = name,
+    color = color
 )
 
 fun String.toTaskTime(): TaskTime {
