@@ -5,6 +5,7 @@ data class Task(
     val title: String,
     val priority: TaskPriority,
     val time: TaskTime,
+    val category: Category
 )
 data class TaskTime(
     val fullISOFormat: String,

@@ -12,11 +12,14 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import one.reevdev.stood.core.domain.task.model.Category
+import one.reevdev.stood.core.domain.task.params.TaskParams
 
 @Composable
 fun AddTaskRouter(
     viewModel: AddTaskViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
+    defaultCategory: Category = Category(999, "General", "#5BC8F4"),
 ) {
     val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -26,6 +29,15 @@ fun AddTaskRouter(
     var hour by rememberSaveable { mutableStateOf("") }
     var date by rememberSaveable { mutableStateOf("") }
     var priority by rememberSaveable { mutableStateOf(2) }
+    var hasCategoriesBeenLoaded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.categories) {
+        if (uiState.categories.isNotEmpty()) hasCategoriesBeenLoaded = true
+    }
+
+    LaunchedEffect(true) {
+        viewModel.init()
+    }
 
     LaunchedEffect(uiState.isTaskSaved) {
         if (uiState.isTaskSaved) {
@@ -33,33 +45,44 @@ fun AddTaskRouter(
         }
     }
 
-    AddTaskScreen(
-        uiState = uiState,
-        snackbarHostState = snackbarHostState,
-        title = title,
-        hour = hour,
-        date = date,
-        priority = priority,
-        onTitleChange = { title = it },
-        onHourChange = { hour = it },
-        onDateChange = { date = it },
-        onPriorityChange = { priority = it },
-        onNavigateBack = onNavigateBack,
-        onSaveTask = {
-            if (isDataValid(title, hour, date))
-                viewModel.addTask(
-                    title, hour, date, priority
-                )
-            else {
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = "Please fill out the data correctly",
-                        withDismissAction = true
-                    )
+    if (hasCategoriesBeenLoaded) {
+        var category by remember {
+            mutableStateOf(uiState.categories.first())
+        }
+
+        val taskParams = TaskParams(
+            title = title,
+            time = hour,
+            date = date,
+            priority = priority,
+            category = category
+        )
+
+        AddTaskScreen(
+            uiState = uiState,
+            snackbarHostState = snackbarHostState,
+            taskParams = taskParams,
+            categoryList = uiState.categories,
+            onTitleChange = { title = it },
+            onHourChange = { hour = it },
+            onDateChange = { date = it },
+            onPriorityChange = { priority = it },
+            onCategoryChange = { category = it },
+            onNavigateBack = onNavigateBack,
+            onSaveTask = {
+                if (isDataValid(title, hour, date))
+                    viewModel.addTask(taskParams)
+                else {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Please fill out the data correctly",
+                            withDismissAction = true
+                        )
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 fun isDataValid(

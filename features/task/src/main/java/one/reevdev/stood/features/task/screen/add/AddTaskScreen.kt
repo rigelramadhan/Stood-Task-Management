@@ -1,6 +1,6 @@
 package one.reevdev.stood.features.task.screen.add
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -27,42 +24,53 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import one.reevdev.stood.core.domain.task.model.Category
+import one.reevdev.stood.core.domain.task.model.TaskPriority
+import one.reevdev.stood.core.domain.task.params.TaskParams
 import one.reevdev.stood.features.task.R
+import one.reevdev.stood.features.task.component.PriorityPickerBottomSheet
 import one.reevdev.stood.features.task.component.TaskDatePickerDialog
 import one.reevdev.stood.features.task.component.TaskToolbar
 import one.reevdev.stood.features.task.component.TimePickerDialog
+import one.reevdev.stood.features.task.utils.toComposeColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
     modifier: Modifier = Modifier,
     uiState: AddTaskUiState,
     snackbarHostState: SnackbarHostState,
-    taskPriorityList: Array<String> = stringArrayResource(id = R.array.task_priorities),
-    title: String,
-    hour: String,
-    date: String,
-    priority: Int,
+    taskPriorityList: List<TaskPriority> = TaskPriority.values().toList(),
+    taskParams: TaskParams,
+    categoryList: List<Category>,
     onTitleChange: (String) -> Unit,
     onHourChange: (String) -> Unit,
     onDateChange: (String) -> Unit,
     onPriorityChange: (Int) -> Unit,
+    onCategoryChange: (Category) -> Unit,
     onNavigateBack: () -> Unit,
     onSaveTask: () -> Unit,
 ) {
-    var isDropdownExpanded by remember { mutableStateOf(false) }
-    val priorityLabel = when (priority) {
+    val priorityPickerBottomSheetState = rememberModalBottomSheetState()
+    var showPriorityPickerBottomSheet by remember { mutableStateOf(false) }
+    var isCategoryDropdownExpanded by remember { mutableStateOf(false) }
+    val priorityLabel = when (taskParams.priority) {
         1 -> taskPriorityList[0]
         2 -> taskPriorityList[1]
         3 -> taskPriorityList[2]
@@ -73,7 +81,7 @@ fun AddTaskScreen(
     var isDatePickerDialogShown by remember { mutableStateOf(false) }
     var isTimePickerDialogShown by remember { mutableStateOf(false) }
 
-    val interactionSource = remember { MutableInteractionSource() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
@@ -99,7 +107,7 @@ fun AddTaskScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = title,
+                    value = taskParams.title,
                     label = { Text(text = stringResource(R.string.label_title)) },
                     onValueChange = onTitleChange,
                     shape = RoundedCornerShape(16.dp)
@@ -117,7 +125,7 @@ fun AddTaskScreen(
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         Text(
-                            text = hour.ifEmpty { stringResource(R.string.action_pick_a_time) },
+                            text = taskParams.time.ifEmpty { stringResource(R.string.action_pick_a_time) },
                             style = MaterialTheme.typography.titleMedium,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1
@@ -130,7 +138,7 @@ fun AddTaskScreen(
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         Text(
-                            text = date.ifEmpty { stringResource(R.string.action_pick_a_date) },
+                            text = taskParams.date.ifEmpty { stringResource(R.string.action_pick_a_date) },
                             style = MaterialTheme.typography.titleMedium,
                             overflow = TextOverflow.Ellipsis,
                             maxLines = 1
@@ -139,8 +147,8 @@ fun AddTaskScreen(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedButton(
-                    onClick = { isDropdownExpanded = true },
-                    contentPadding = PaddingValues(16.dp)
+                    onClick = { showPriorityPickerBottomSheet = true },
+                    contentPadding = PaddingValues(16.dp),
                 ) {
                     Text(
                         modifier = Modifier
@@ -151,28 +159,40 @@ fun AddTaskScreen(
                         maxLines = 1,
                         textAlign = TextAlign.Center
                     )
-                    Icon(
-                        imageVector = if (isDropdownExpanded)
-                            Icons.Outlined.KeyboardArrowUp else
-                            Icons.Outlined.KeyboardArrowDown,
-                        contentDescription = stringResource(
-                            R.string.content_description_dropdown_icon
-                        )
+                    Box(
+                        modifier = Modifier
+                            .align(CenterVertically)
+                            .clip(CircleShape)
+                            .size(24.dp)
+                            .background(
+                                color = TaskPriority
+                                    .values()
+                                    .first { it.priorityLevel == taskParams.priority }
+                                    .color.toComposeColor()
+                            ),
                     )
                 }
-                DropdownMenu(
-                    expanded = isDropdownExpanded,
-                    onDismissRequest = { isDropdownExpanded = false }) {
-                    taskPriorityList.forEachIndexed { index, item ->
-                        DropdownMenuItem(
-                            text = { Text(item) },
-                            onClick = {
-                                onPriorityChange(index.plus(1))
-                                isDropdownExpanded = false
-                            }
-                        )
-                    }
-                }
+                Spacer(modifier = Modifier.height(16.dp))
+//                CategoryDropdown(
+//                    category = taskParams.category,
+//                    isDropdownExpanded = isCategoryDropdownExpanded,
+//                    onDropdownClick = {
+//                        isCategoryDropdownExpanded = !isCategoryDropdownExpanded
+//                    }
+//                )
+//                DropdownMenu(
+//                    expanded = isCategoryDropdownExpanded,
+//                    onDismissRequest = { isCategoryDropdownExpanded = false }) {
+//                    categoryList.forEach { category ->
+//                        DropdownMenuItem(
+//                            text = { Text(category.name) },
+//                            onClick = {
+//                                onCategoryChange(category)
+//                                isCategoryDropdownExpanded = false
+//                            }
+//                        )
+//                    }
+//                }
             }
             Button(
                 modifier = Modifier
@@ -200,6 +220,23 @@ fun AddTaskScreen(
                 onTimeDismiss = { isTimePickerDialogShown = false },
                 onDateDismiss = { isDatePickerDialogShown = false }
             )
+            if (showPriorityPickerBottomSheet)
+                PriorityPickerBottomSheet(
+                    onDismissRequest = {
+                        showPriorityPickerBottomSheet = false
+                    },
+                    title = stringResource(R.string.label_choose_the_priority),
+                    sheetState = priorityPickerBottomSheetState,
+                    priorities = taskPriorityList,
+                    onPriorityClick = {
+                        scope.launch {
+                            priorityPickerBottomSheetState.hide()
+                        }.invokeOnCompletion {
+                            showPriorityPickerBottomSheet = false
+                        }
+                        onPriorityChange(it.priorityLevel)
+                    }
+                )
         }
     }
 }
