@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,9 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import one.reevdev.stood.features.task.R
+import one.reevdev.stood.features.task.component.PriorityButton
 import one.reevdev.stood.features.task.component.TaskToolbar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,16 +98,11 @@ fun DetailTaskScreen(
                             shape = RoundedCornerShape(16.dp)
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        value = it.priority.priorityLabel,
-                        readOnly = true,
-                        label = { Text(text = stringResource(R.string.label_priority)) },
-                        onValueChange = {},
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        shape = RoundedCornerShape(16.dp)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    PriorityButton(
+                        onClick = {},
+                        priority = it.priority.priorityLabel,
+                        color = it.priority.color
                     )
                 }
             }

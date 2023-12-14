@@ -36,9 +36,11 @@ fun CategoryDropdown(
 ) {
     Card(
         modifier = modifier
+            .clip(CircleShape)
             .clickable {
                 onDropdownClick()
             },
+        shape = CircleShape
     ) {
         Row(
             modifier = Modifier
