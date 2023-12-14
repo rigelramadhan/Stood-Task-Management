@@ -9,11 +9,11 @@ import one.reevdev.stood.core.domain.task.model.TaskTime
 interface TaskUseCase {
     fun getTasks(): Flow<List<Task>>
     fun getTaskById(id: String): Flow<Task>
-    suspend fun createTask(title: String, priority: TaskPriority, time: TaskTime, categoryId: Int)
-    suspend fun updateTask(id: String, title: String, priority: TaskPriority, time: TaskTime, categoryId: Int)
+    suspend fun createTask(title: String, priority: TaskPriority, time: TaskTime, categoryId: String)
+    suspend fun updateTask(id: String, title: String, priority: TaskPriority, time: TaskTime, categoryId: String)
     suspend fun deleteTask(id: String)
 
     fun getCategories(): Flow<List<Category>>
     suspend fun createCategory(category: Category)
-    fun getCategoryById(id: Int): Flow<Category>
+    fun getCategoryById(id: String): Flow<Category>
 }

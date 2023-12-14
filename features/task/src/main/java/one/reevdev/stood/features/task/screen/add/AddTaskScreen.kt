@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -44,6 +46,7 @@ import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.params.TaskParams
 import one.reevdev.stood.features.task.R
+import one.reevdev.stood.features.task.component.CategoryDropdown
 import one.reevdev.stood.features.task.component.PriorityPickerBottomSheet
 import one.reevdev.stood.features.task.component.TaskDatePickerDialog
 import one.reevdev.stood.features.task.component.TaskToolbar
@@ -173,26 +176,26 @@ fun AddTaskScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-//                CategoryDropdown(
-//                    category = taskParams.category,
-//                    isDropdownExpanded = isCategoryDropdownExpanded,
-//                    onDropdownClick = {
-//                        isCategoryDropdownExpanded = !isCategoryDropdownExpanded
-//                    }
-//                )
-//                DropdownMenu(
-//                    expanded = isCategoryDropdownExpanded,
-//                    onDismissRequest = { isCategoryDropdownExpanded = false }) {
-//                    categoryList.forEach { category ->
-//                        DropdownMenuItem(
-//                            text = { Text(category.name) },
-//                            onClick = {
-//                                onCategoryChange(category)
-//                                isCategoryDropdownExpanded = false
-//                            }
-//                        )
-//                    }
-//                }
+                CategoryDropdown(
+                    category = taskParams.category,
+                    isDropdownExpanded = isCategoryDropdownExpanded,
+                    onDropdownClick = {
+                        isCategoryDropdownExpanded = !isCategoryDropdownExpanded
+                    }
+                )
+                DropdownMenu(
+                    expanded = isCategoryDropdownExpanded,
+                    onDismissRequest = { isCategoryDropdownExpanded = false }) {
+                    categoryList.forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(category.name) },
+                            onClick = {
+                                onCategoryChange(category)
+                                isCategoryDropdownExpanded = false
+                            }
+                        )
+                    }
+                }
             }
             Button(
                 modifier = Modifier

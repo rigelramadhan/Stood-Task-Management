@@ -14,7 +14,7 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
     fun getTaskById(id: String): Flow<TaskWithCategory> {
         return taskDao.getTaskById(id)
     }
-    suspend fun createTask(title: String, priority: Int, time: String, categoryId: Int) {
+    suspend fun createTask(title: String, priority: Int, time: String, categoryId: String) {
         taskDao.insertTask(TaskEntity(
             id = "${Calendar.getInstance().timeInMillis}task-$priority",
             title = title,
@@ -23,7 +23,7 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
             categoryId = categoryId
         ))
     }
-    suspend fun updateTask(id: String, title: String, priority: Int, time: String, categoryId: Int) {
+    suspend fun updateTask(id: String, title: String, priority: Int, time: String, categoryId: String) {
         taskDao.updateTask(
             TaskEntity(
                 id = id,
@@ -44,5 +44,5 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
 
     fun getCategories() = taskDao.getCategories()
 
-    fun getCategoryById(id: Int) = taskDao.getCategoryById(id)
+    fun getCategoryById(id: String) = taskDao.getCategoryById(id)
 }

@@ -19,7 +19,7 @@ import one.reevdev.stood.core.domain.task.params.TaskParams
 fun AddTaskRouter(
     viewModel: AddTaskViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
-    defaultCategory: Category = Category(999, "General", "#5BC8F4"),
+    defaultCategory: Category = Category("default_general", "General", "#5BC8F4"),
 ) {
     val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
