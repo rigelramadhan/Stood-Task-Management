@@ -18,7 +18,7 @@ data class TaskEntity(
     @ColumnInfo("time")
     val time: String,
     @ColumnInfo("categoryId")
-    val categoryId: Int,
+    val categoryId: String,
 )
 
 data class TaskWithCategory(

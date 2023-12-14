@@ -38,5 +38,5 @@ interface TaskDao {
     fun getCategories(): Flow<List<CategoryEntity>>
 
     @Query("SELECT * FROM category WHERE id = :id")
-    fun getCategoryById(id: Int): Flow<CategoryEntity>
+    fun getCategoryById(id: String): Flow<CategoryEntity>
 }

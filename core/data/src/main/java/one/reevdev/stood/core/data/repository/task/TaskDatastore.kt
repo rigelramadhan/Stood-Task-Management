@@ -19,7 +19,7 @@ class TaskDatastore @Inject constructor(
         return localDataSource.getTaskById(id)
     }
 
-    override suspend fun createTask(title: String, priority: Int, time: String, categoryId: Int) {
+    override suspend fun createTask(title: String, priority: Int, time: String, categoryId: String) {
         localDataSource.createTask(title, priority, time, categoryId)
     }
 
@@ -28,7 +28,7 @@ class TaskDatastore @Inject constructor(
         title: String,
         priority: Int,
         time: String,
-        categoryId: Int
+        categoryId: String
     ) {
         localDataSource.updateTask(id, title, priority, time, categoryId)
     }
@@ -45,7 +45,7 @@ class TaskDatastore @Inject constructor(
         localDataSource.insertCategory(category)
     }
 
-    override fun getCategoryById(id: Int): Flow<CategoryEntity> {
+    override fun getCategoryById(id: String): Flow<CategoryEntity> {
         return localDataSource.getCategoryById(id)
     }
 }

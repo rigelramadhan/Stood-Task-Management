@@ -26,7 +26,7 @@ class TaskInteractor @Inject constructor(
         title: String,
         priority: TaskPriority,
         time: TaskTime,
-        categoryId: Int
+        categoryId: String
     ) {
         taskRepository.createTask(title, priority.priorityLevel, time.fullISOFormat, categoryId)
     }
@@ -36,7 +36,7 @@ class TaskInteractor @Inject constructor(
         title: String,
         priority: TaskPriority,
         time: TaskTime,
-        categoryId: Int
+        categoryId: String
     ) {
         taskRepository.updateTask(id, title, priority.priorityLevel, time.fullISOFormat, categoryId)
     }
@@ -55,7 +55,7 @@ class TaskInteractor @Inject constructor(
         taskRepository.createCategory(category.toEntity())
     }
 
-    override fun getCategoryById(id: Int): Flow<Category> {
+    override fun getCategoryById(id: String): Flow<Category> {
         return taskRepository.getCategoryById(id).map { it.toDomain() }
     }
 }
