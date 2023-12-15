@@ -14,6 +14,10 @@ class TaskDatastore @Inject constructor(
         return localDataSource.getTasks()
     }
 
+    override fun getTaskSorted(sortBy: String): Flow<List<TaskEntity>> {
+        TODO("Not yet implemented")
+    }
+
     override fun getTaskById(id: String): Flow<TaskEntity> {
         return localDataSource.getTaskById(id)
     }
