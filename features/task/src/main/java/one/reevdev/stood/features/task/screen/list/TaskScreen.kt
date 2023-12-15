@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import one.reevdev.stood.features.task.R
-import one.reevdev.stood.features.task.component.TaskItem
-import one.reevdev.stood.features.task.component.TaskToolbar
+import one.reevdev.stood.features.task.component.task.TaskItem
+import one.reevdev.stood.features.task.component.task.TaskToolbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

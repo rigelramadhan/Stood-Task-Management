@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.task
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack

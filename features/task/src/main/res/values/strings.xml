@@ -19,6 +19,7 @@
     <string name="content_description_dropdown_icon">Dropdown Icon</string>
     <string name="label_choose_the_priority">Choose the priority</string>
     <string name="action_select_category">Select a category</string>
+    <string name="label_select_status">Select status</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>

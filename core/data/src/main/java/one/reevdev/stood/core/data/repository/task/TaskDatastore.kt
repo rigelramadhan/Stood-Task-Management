@@ -3,6 +3,7 @@ package one.reevdev.stood.core.data.repository.task
 import kotlinx.coroutines.flow.Flow
 import one.reevdev.stood.core.data.datasource.local.task.TaskLocalDataSource
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
+import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,18 +20,15 @@ class TaskDatastore @Inject constructor(
         return localDataSource.getTaskById(id)
     }
 
-    override suspend fun createTask(title: String, priority: Int, time: String, categoryId: String) {
-        localDataSource.createTask(title, priority, time, categoryId)
+    override suspend fun createTask(taskParams: TaskEntityParams) {
+        localDataSource.createTask(taskParams)
     }
 
     override suspend fun updateTask(
         id: String,
-        title: String,
-        priority: Int,
-        time: String,
-        categoryId: String
+        taskParams: TaskEntityParams
     ) {
-        localDataSource.updateTask(id, title, priority, time, categoryId)
+        localDataSource.updateTask(id, taskParams)
     }
 
     override suspend fun deleteTask(id: String) {
