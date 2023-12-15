@@ -17,6 +17,8 @@
     <string name="action_pick_a_time">Pick a time</string>
     <string name="action_pick_a_date">Pick a date</string>
     <string name="content_description_dropdown_icon">Dropdown Icon</string>
+    <string name="label_choose_the_priority">Choose the priority</string>
+    <string name="action_select_category">Select a category</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>
