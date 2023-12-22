@@ -4,10 +4,12 @@ import kotlinx.coroutines.flow.Flow
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskStatus
 
 interface TaskUseCase {
     fun getTasks(): Flow<List<Task>>
     fun getTaskById(id: String): Flow<Task>
+    fun getTaskByStatus(status: TaskStatus): Flow<List<Task>>
     suspend fun createTask(
         taskParams: TaskParams
     )

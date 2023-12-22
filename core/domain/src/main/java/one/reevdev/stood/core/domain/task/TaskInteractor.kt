@@ -6,6 +6,7 @@ import one.reevdev.stood.core.data.repository.task.TaskRepository
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskStatus
 import javax.inject.Inject
 
 class TaskInteractor @Inject constructor(
@@ -19,6 +20,10 @@ class TaskInteractor @Inject constructor(
 
     override fun getTaskById(id: String): Flow<Task> {
         return taskRepository.getTaskById(id).map { it.toDomain() }
+    }
+
+    override fun getTaskByStatus(status: TaskStatus): Flow<List<Task>> {
+        return taskRepository.getTaskByStatus(status.key).map { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun createTask(

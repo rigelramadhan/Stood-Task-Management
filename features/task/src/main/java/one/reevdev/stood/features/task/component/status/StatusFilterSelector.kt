@@ -19,9 +19,8 @@ import one.reevdev.stood.features.task.R
 @Composable
 fun StatusFilterSelector(
     modifier: Modifier = Modifier,
-    statusList: List<TaskStatus> = TaskStatus.values().toList(),
-    selectedStatus: TaskStatus,
-    isStatusSelected: (TaskStatus) -> Boolean,
+    statusList: List<TaskStatus> = TaskStatus.values().toList().dropWhile { it == TaskStatus.All },
+    isSelectedStatus: (TaskStatus) -> Boolean,
     onStatusSelect: (TaskStatus) -> Unit,
 ) {
     Column(
@@ -36,7 +35,7 @@ fun StatusFilterSelector(
             items(items = statusList, key = { it.key }) {
                 FilterChip(
                     modifier = Modifier,
-                    selected = isStatusSelected(it),
+                    selected = isSelectedStatus(it),
                     onClick = { onStatusSelect(it) },
                     label = { Text(it.label) },
                     shape = CircleShape

@@ -20,6 +20,10 @@ class TaskDatastore @Inject constructor(
         return localDataSource.getTaskById(id)
     }
 
+    override fun getTaskByStatus(status: String): Flow<List<TaskWithCategory>> {
+        return localDataSource.getTaskByStatus(status)
+    }
+
     override suspend fun createTask(taskParams: TaskEntityParams) {
         localDataSource.createTask(taskParams)
     }

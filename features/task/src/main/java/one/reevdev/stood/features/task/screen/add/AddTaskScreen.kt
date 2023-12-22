@@ -107,8 +107,7 @@ fun AddTaskScreen(
             ) {
                 StatusFilterSelector(
                     modifier = Modifier.fillMaxWidth(),
-                    selectedStatus = taskParams.status,
-                    isStatusSelected = { taskParams.status == it },
+                    isSelectedStatus = { taskParams.status == it },
                     onStatusSelect = onStatusChange
                 )
                 Divider()

@@ -20,7 +20,7 @@ interface TaskDao {
     fun getTaskById(id: String): Flow<TaskWithCategory>
 
     @Query("SELECT * FROM task WHERE status = :status")
-    fun getTaskByStatus(status: String): Flow<TaskWithCategory>
+    fun getTaskByStatus(status: String): Flow<List<TaskWithCategory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(taskEntity: TaskEntity)
