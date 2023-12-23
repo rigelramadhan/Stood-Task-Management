@@ -16,6 +16,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -38,14 +39,16 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.TaskPriority
-import one.reevdev.stood.core.domain.task.params.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskStatus
+import one.reevdev.stood.core.domain.task.params.TaskUiParams
 import one.reevdev.stood.features.task.R
-import one.reevdev.stood.features.task.component.CategoryDropdown
-import one.reevdev.stood.features.task.component.PriorityButton
-import one.reevdev.stood.features.task.component.PriorityPickerBottomSheet
-import one.reevdev.stood.features.task.component.TaskDatePickerDialog
-import one.reevdev.stood.features.task.component.TaskToolbar
-import one.reevdev.stood.features.task.component.TimePickerDialog
+import one.reevdev.stood.features.task.component.category.CategoryDropdown
+import one.reevdev.stood.features.task.component.dialog.TaskDatePickerDialog
+import one.reevdev.stood.features.task.component.dialog.TimePickerDialog
+import one.reevdev.stood.features.task.component.priority.PriorityButton
+import one.reevdev.stood.features.task.component.priority.PriorityPickerBottomSheet
+import one.reevdev.stood.features.task.component.status.StatusFilterSelector
+import one.reevdev.stood.features.task.component.task.TaskToolbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,13 +57,14 @@ fun AddTaskScreen(
     uiState: AddTaskUiState,
     snackbarHostState: SnackbarHostState,
     taskPriorityList: List<TaskPriority> = TaskPriority.values().toList(),
-    taskParams: TaskParams,
+    taskParams: TaskUiParams,
     categoryList: List<Category>,
     onTitleChange: (String) -> Unit,
     onHourChange: (String) -> Unit,
     onDateChange: (String) -> Unit,
     onPriorityChange: (Int) -> Unit,
     onCategoryChange: (Category) -> Unit,
+    onStatusChange: (TaskStatus) -> Unit,
     onNavigateBack: () -> Unit,
     onSaveTask: () -> Unit,
 ) {
@@ -101,6 +105,14 @@ fun AddTaskScreen(
                     .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 80.dp)
                     .align(Alignment.TopStart)
             ) {
+                StatusFilterSelector(
+                    modifier = Modifier.fillMaxWidth(),
+                    isSelectedStatus = { taskParams.status == it },
+                    onStatusSelect = onStatusChange
+                )
+                Divider()
+                Text(text = "What kind of task are you planning? 🤔")
+                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -149,7 +161,7 @@ fun AddTaskScreen(
                     color = TaskPriority.values()
                         .first { it.priorityLevel == taskParams.priority }.color
                 )
-                Spacer(modifier = Modifier.height(32.dp))
+                Divider(modifier = Modifier.padding(top = 8.dp))
                 Text(text = stringResource(R.string.action_select_category))
                 Spacer(modifier = Modifier.height(8.dp))
                 CategoryDropdown(
@@ -217,6 +229,17 @@ fun AddTaskScreen(
                     }
                 )
         }
+    }
+}
+
+@Composable
+fun Divider(
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Spacer(modifier = Modifier.height(16.dp))
+        HorizontalDivider(modifier = Modifier.fillMaxWidth())
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

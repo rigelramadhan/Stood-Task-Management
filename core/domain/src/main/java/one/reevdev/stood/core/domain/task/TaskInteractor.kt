@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.map
 import one.reevdev.stood.core.data.repository.task.TaskRepository
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
-import one.reevdev.stood.core.domain.task.model.TaskPriority
-import one.reevdev.stood.core.domain.task.model.TaskTime
+import one.reevdev.stood.core.domain.task.model.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskStatus
 import javax.inject.Inject
 
 class TaskInteractor @Inject constructor(
@@ -22,23 +22,21 @@ class TaskInteractor @Inject constructor(
         return taskRepository.getTaskById(id).map { it.toDomain() }
     }
 
+    override fun getTaskByStatus(status: TaskStatus): Flow<List<Task>> {
+        return taskRepository.getTaskByStatus(status.key).map { list -> list.map { it.toDomain() } }
+    }
+
     override suspend fun createTask(
-        title: String,
-        priority: TaskPriority,
-        time: TaskTime,
-        categoryId: String
+        taskParams: TaskParams
     ) {
-        taskRepository.createTask(title, priority.priorityLevel, time.fullISOFormat, categoryId)
+        taskRepository.createTask(taskParams.toEntity())
     }
 
     override suspend fun updateTask(
         id: String,
-        title: String,
-        priority: TaskPriority,
-        time: TaskTime,
-        categoryId: String
+        taskParams: TaskParams
     ) {
-        taskRepository.updateTask(id, title, priority.priorityLevel, time.fullISOFormat, categoryId)
+        taskRepository.updateTask(id, taskParams.toEntity())
     }
 
     override suspend fun deleteTask(id: String) {

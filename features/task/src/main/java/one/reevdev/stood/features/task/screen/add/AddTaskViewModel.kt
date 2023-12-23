@@ -9,11 +9,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.stood.core.domain.task.TaskUseCase
-import one.reevdev.stood.core.domain.task.mapToApiString
 import one.reevdev.stood.core.domain.task.model.Category
-import one.reevdev.stood.core.domain.task.model.TaskPriority
-import one.reevdev.stood.core.domain.task.model.TaskTime
-import one.reevdev.stood.core.domain.task.params.TaskParams
+import one.reevdev.stood.core.domain.task.params.TaskUiParams
+import one.reevdev.stood.core.domain.task.toDomain
 import one.reevdev.stood.features.task.utils.UiState
 import javax.inject.Inject
 
@@ -51,22 +49,13 @@ class AddTaskViewModel @Inject constructor(
         }
     }
 
-    fun addTask(taskParams: TaskParams) {
+    fun addTask(taskParams: TaskUiParams) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
-                with(taskParams) {
-                    taskUseCase.createTask(
-                        title = title,
-                        priority = TaskPriority.values().first { it.priorityLevel == priority },
-                        time = TaskTime(
-                            fullISOFormat = mapToApiString(time, date),
-                            time = time,
-                            date = date
-                        ),
-                        categoryId = category.id
-                    )
-                }
+                taskUseCase.createTask(
+                    taskParams.toDomain()
+                )
                 _uiState.update {
                     it.copy(
                         isLoading = false,

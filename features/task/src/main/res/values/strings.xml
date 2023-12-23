@@ -19,6 +19,13 @@
     <string name="content_description_dropdown_icon">Dropdown Icon</string>
     <string name="label_choose_the_priority">Choose the priority</string>
     <string name="action_select_category">Select a category</string>
+    <string name="label_select_status">Select status</string>
+    <string name="label_to_do_tasks">To Do Tasks 💡</string>
+    <string name="label_on_going_task">On Going Task 🚙</string>
+    <string name="label_done_tasks">Done Tasks ✅</string>
+    <string name="message_no_task_done">No task found for this status</string>
+    <string name="label_status">Status</string>
+    <string name="label_category">Category</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>

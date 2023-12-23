@@ -26,8 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import one.reevdev.stood.features.task.R
-import one.reevdev.stood.features.task.component.PriorityButton
-import one.reevdev.stood.features.task.component.TaskToolbar
+import one.reevdev.stood.features.task.component.category.CategoryDropdown
+import one.reevdev.stood.features.task.component.priority.PriorityButton
+import one.reevdev.stood.features.task.component.status.StatusFilterSelector
+import one.reevdev.stood.features.task.component.task.TaskToolbar
+import one.reevdev.stood.features.task.screen.add.Divider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,6 +66,12 @@ fun DetailTaskScreen(
                         .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 80.dp)
                         .align(Alignment.TopStart)
                 ) {
+                    StatusFilterSelector(
+                        modifier = Modifier.fillMaxWidth(),
+                        isSelectedStatus = { uiState.task.status == it },
+                    )
+                    Divider()
+                    Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -103,6 +112,14 @@ fun DetailTaskScreen(
                         onClick = {},
                         priority = it.priority.priorityLabel,
                         color = it.priority.color
+                    )
+                    Divider(modifier = Modifier.padding(top = 8.dp))
+                    Text(text = stringResource(R.string.label_category))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    CategoryDropdown(
+                        category = uiState.task.category,
+                        isDropdownExpanded = false,
+                        onDropdownClick = {}
                     )
                 }
             }

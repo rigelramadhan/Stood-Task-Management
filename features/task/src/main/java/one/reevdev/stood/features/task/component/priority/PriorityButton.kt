@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.priority
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

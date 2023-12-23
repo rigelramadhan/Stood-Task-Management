@@ -13,7 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import one.reevdev.stood.core.domain.task.model.Category
-import one.reevdev.stood.core.domain.task.params.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskStatus
+import one.reevdev.stood.core.domain.task.params.TaskUiParams
 
 @Composable
 fun AddTaskRouter(
@@ -29,6 +30,7 @@ fun AddTaskRouter(
     var hour by rememberSaveable { mutableStateOf("") }
     var date by rememberSaveable { mutableStateOf("") }
     var priority by rememberSaveable { mutableStateOf(2) }
+    var status by rememberSaveable { mutableStateOf(TaskStatus.ToDo) }
     var hasCategoriesBeenLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.categories) {
@@ -50,12 +52,13 @@ fun AddTaskRouter(
             mutableStateOf(uiState.categories.first())
         }
 
-        val taskParams = TaskParams(
+        val taskParams = TaskUiParams(
             title = title,
             time = hour,
             date = date,
             priority = priority,
-            category = category
+            category = category,
+            status = status
         )
 
         AddTaskScreen(
@@ -68,6 +71,7 @@ fun AddTaskRouter(
             onDateChange = { date = it },
             onPriorityChange = { priority = it },
             onCategoryChange = { category = it },
+            onStatusChange = { status = it },
             onNavigateBack = onNavigateBack,
             onSaveTask = {
                 if (isDataValid(title, hour, date))

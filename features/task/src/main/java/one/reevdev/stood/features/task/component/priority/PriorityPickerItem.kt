@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.priority
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

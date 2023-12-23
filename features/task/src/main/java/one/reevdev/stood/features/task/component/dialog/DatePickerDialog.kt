@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.dialog
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
