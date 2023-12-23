@@ -21,12 +21,15 @@ fun StatusFilterSelector(
     modifier: Modifier = Modifier,
     statusList: List<TaskStatus> = TaskStatus.values().toList().dropWhile { it == TaskStatus.All },
     isSelectedStatus: (TaskStatus) -> Boolean,
-    onStatusSelect: (TaskStatus) -> Unit,
+    onStatusSelect: ((TaskStatus) -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
     ) {
-        Text(text = stringResource(R.string.label_select_status))
+        val statusLabel =
+            if (onStatusSelect != null) stringResource(R.string.label_select_status)
+            else stringResource(R.string.label_status)
+        Text(text = statusLabel)
         Spacer(modifier = Modifier.height(4.dp))
         LazyRow(
             modifier = Modifier,
@@ -36,7 +39,7 @@ fun StatusFilterSelector(
                 FilterChip(
                     modifier = Modifier,
                     selected = isSelectedStatus(it),
-                    onClick = { onStatusSelect(it) },
+                    onClick = { onStatusSelect?.invoke(it) },
                     label = { Text(it.label) },
                     shape = CircleShape
                 )
