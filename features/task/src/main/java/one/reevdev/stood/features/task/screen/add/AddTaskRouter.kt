@@ -12,15 +12,15 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import one.reevdev.stood.core.domain.task.model.Category
+import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.core.domain.task.params.TaskUiParams
+import one.reevdev.stood.features.task.utils.actions.TaskAction
 
 @Composable
 fun AddTaskRouter(
     viewModel: AddTaskViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit,
-    defaultCategory: Category = Category("default_general", "General", "#5BC8F4"),
 ) {
     val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -29,7 +29,7 @@ fun AddTaskRouter(
     var title by rememberSaveable { mutableStateOf("") }
     var hour by rememberSaveable { mutableStateOf("") }
     var date by rememberSaveable { mutableStateOf("") }
-    var priority by rememberSaveable { mutableStateOf(2) }
+    var priority by rememberSaveable { mutableStateOf(TaskPriority.Normal) }
     var status by rememberSaveable { mutableStateOf(TaskStatus.ToDo) }
     var hasCategoriesBeenLoaded by remember { mutableStateOf(false) }
 
@@ -61,18 +61,13 @@ fun AddTaskRouter(
             status = status
         )
 
-        AddTaskScreen(
-            uiState = uiState,
-            snackbarHostState = snackbarHostState,
-            taskParams = taskParams,
-            categoryList = uiState.categories,
+        val taskAction = TaskAction(
             onTitleChange = { title = it },
             onHourChange = { hour = it },
             onDateChange = { date = it },
             onPriorityChange = { priority = it },
             onCategoryChange = { category = it },
             onStatusChange = { status = it },
-            onNavigateBack = onNavigateBack,
             onSaveTask = {
                 if (isDataValid(title, hour, date))
                     viewModel.addTask(taskParams)
@@ -85,6 +80,15 @@ fun AddTaskRouter(
                     }
                 }
             }
+        )
+
+        AddTaskScreen(
+            uiState = uiState,
+            snackbarHostState = snackbarHostState,
+            taskParams = taskParams,
+            categoryList = uiState.categories,
+            taskAction = taskAction,
+            onNavigateBack = onNavigateBack,
         )
     }
 }

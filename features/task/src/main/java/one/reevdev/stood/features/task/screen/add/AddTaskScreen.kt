@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.TaskPriority
-import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.core.domain.task.params.TaskUiParams
 import one.reevdev.stood.features.task.R
 import one.reevdev.stood.features.task.component.category.CategoryDropdown
@@ -49,6 +48,7 @@ import one.reevdev.stood.features.task.component.priority.PriorityButton
 import one.reevdev.stood.features.task.component.priority.PriorityPickerBottomSheet
 import one.reevdev.stood.features.task.component.status.StatusFilterSelector
 import one.reevdev.stood.features.task.component.task.TaskToolbar
+import one.reevdev.stood.features.task.utils.actions.TaskAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,26 +59,12 @@ fun AddTaskScreen(
     taskPriorityList: List<TaskPriority> = TaskPriority.values().toList(),
     taskParams: TaskUiParams,
     categoryList: List<Category>,
-    onTitleChange: (String) -> Unit,
-    onHourChange: (String) -> Unit,
-    onDateChange: (String) -> Unit,
-    onPriorityChange: (Int) -> Unit,
-    onCategoryChange: (Category) -> Unit,
-    onStatusChange: (TaskStatus) -> Unit,
+    taskAction: TaskAction,
     onNavigateBack: () -> Unit,
-    onSaveTask: () -> Unit,
 ) {
     val priorityPickerBottomSheetState = rememberModalBottomSheetState()
     var showPriorityPickerBottomSheet by remember { mutableStateOf(false) }
     var isCategoryDropdownExpanded by remember { mutableStateOf(false) }
-    val priorityLabel = when (taskParams.priority) {
-        1 -> taskPriorityList[0]
-        2 -> taskPriorityList[1]
-        3 -> taskPriorityList[2]
-        4 -> taskPriorityList[3]
-        5 -> taskPriorityList[4]
-        else -> "Other"
-    }.toString()
     var isDatePickerDialogShown by remember { mutableStateOf(false) }
     var isTimePickerDialogShown by remember { mutableStateOf(false) }
 
@@ -108,7 +94,7 @@ fun AddTaskScreen(
                 StatusFilterSelector(
                     modifier = Modifier.fillMaxWidth(),
                     isSelectedStatus = { taskParams.status == it },
-                    onStatusSelect = onStatusChange
+                    onStatusSelect = taskAction.onStatusChange
                 )
                 Divider()
                 Text(text = "What kind of task are you planning? 🤔")
@@ -118,7 +104,7 @@ fun AddTaskScreen(
                         .fillMaxWidth(),
                     value = taskParams.title,
                     label = { Text(text = stringResource(R.string.label_title)) },
-                    onValueChange = onTitleChange,
+                    onValueChange = taskAction.onTitleChange,
                     shape = RoundedCornerShape(16.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -157,9 +143,9 @@ fun AddTaskScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 PriorityButton(
                     onClick = { showPriorityPickerBottomSheet = true },
-                    priority = priorityLabel,
+                    priority = taskParams.priority.priorityLabel,
                     color = TaskPriority.values()
-                        .first { it.priorityLevel == taskParams.priority }.color
+                        .first { it == taskParams.priority }.color
                 )
                 Divider(modifier = Modifier.padding(top = 8.dp))
                 Text(text = stringResource(R.string.action_select_category))
@@ -173,12 +159,13 @@ fun AddTaskScreen(
                 )
                 DropdownMenu(
                     expanded = isCategoryDropdownExpanded,
-                    onDismissRequest = { isCategoryDropdownExpanded = false }) {
+                    onDismissRequest = { isCategoryDropdownExpanded = false }
+                ) {
                     categoryList.forEach { category ->
                         DropdownMenuItem(
                             text = { Text(category.name) },
                             onClick = {
-                                onCategoryChange(category)
+                                taskAction.onCategoryChange(category)
                                 isCategoryDropdownExpanded = false
                             }
                         )
@@ -190,7 +177,7 @@ fun AddTaskScreen(
                     .fillMaxWidth()
                     .padding(24.dp)
                     .align(Alignment.BottomCenter),
-                onClick = onSaveTask
+                onClick = taskAction.onSaveTask
             ) {
                 Text(text = stringResource(R.string.action_save_task))
             }
@@ -206,8 +193,8 @@ fun AddTaskScreen(
             TimeAndDateDialog(
                 isTimeDialogShown = isTimePickerDialogShown,
                 isDateDialogShown = isDatePickerDialogShown,
-                onTimeChange = onHourChange,
-                onDateChange = onDateChange,
+                onTimeChange = taskAction.onHourChange,
+                onDateChange = taskAction.onDateChange,
                 onTimeDismiss = { isTimePickerDialogShown = false },
                 onDateDismiss = { isDatePickerDialogShown = false }
             )
@@ -225,7 +212,7 @@ fun AddTaskScreen(
                         }.invokeOnCompletion {
                             showPriorityPickerBottomSheet = false
                         }
-                        onPriorityChange(it.priorityLevel)
+                        taskAction.onPriorityChange(it)
                     }
                 )
         }
