@@ -41,7 +41,7 @@ fun TaskParams.toEntity() = TaskEntityParams(
 
 fun TaskUiParams.toDomain() = TaskParams(
     title = title,
-    priority = TaskPriority.values().first { it.priorityLevel == priority },
+    priority = priority,
     time = TaskTime(mapToApiString(time, date), time, date),
     categoryId = category.id,
     status = status

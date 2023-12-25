@@ -19,6 +19,7 @@ import one.reevdev.stood.features.task.R
 @Composable
 fun StatusFilterSelector(
     modifier: Modifier = Modifier,
+    title: String? = null,
     statusList: List<TaskStatus> = TaskStatus.values().toList().dropWhile { it == TaskStatus.All },
     isSelectedStatus: (TaskStatus) -> Boolean,
     onStatusSelect: ((TaskStatus) -> Unit)? = null,
@@ -26,10 +27,7 @@ fun StatusFilterSelector(
     Column(
         modifier = modifier
     ) {
-        val statusLabel =
-            if (onStatusSelect != null) stringResource(R.string.label_select_status)
-            else stringResource(R.string.label_status)
-        Text(text = statusLabel)
+        Text(text = title ?: stringResource(R.string.label_select_status))
         Spacer(modifier = Modifier.height(4.dp))
         LazyRow(
             modifier = Modifier,

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Task
+import one.reevdev.stood.core.domain.task.model.TaskParams
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.features.task.utils.UiState
 import javax.inject.Inject
@@ -70,6 +71,32 @@ class TaskViewModel @Inject constructor(
                 isLoading = false,
                 filter = status
             )
+        }
+    }
+
+    fun updateTask(task: Task) {
+        _uiState.update { it.copy(isLoading = true) }
+        val taskParam = TaskParams(
+            task.title, task.priority, task.time, task.category.id, task.status
+        )
+
+        viewModelScope.launch {
+            try {
+                taskUseCase.updateTask(task.id, taskParam)
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = null,
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                    )
+                }
+            }
         }
     }
 }

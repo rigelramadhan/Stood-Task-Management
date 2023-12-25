@@ -42,6 +42,7 @@ fun TaskScreen(
     onStatusSelect: (TaskStatus) -> Unit,
     navigateToDetail: (id: String) -> Unit,
     navigateToAddTask: () -> Unit,
+    onTaskUpdate: (Task) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -73,7 +74,8 @@ fun TaskScreen(
                 taskList(
                     scope = this,
                     uiState = uiState,
-                    navigateToDetail = navigateToDetail
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
                 )
             }
             FloatingActionButton(
@@ -105,7 +107,8 @@ fun TaskScreen(
 fun taskList(
     scope: LazyListScope,
     uiState: TaskUiState,
-    navigateToDetail: (id: String) -> Unit
+    navigateToDetail: (id: String) -> Unit,
+    onTaskUpdate: (Task) -> Unit,
 ) {
     when (uiState.filter) {
         TaskStatus.ToDo -> {
@@ -114,7 +117,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
         }
 
@@ -124,7 +127,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
         }
 
@@ -134,7 +137,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
         }
 
@@ -144,7 +147,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.onGoingTasks?.let { tasks ->
@@ -152,7 +155,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.doneTasks?.let { tasks ->
@@ -160,7 +163,7 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail)
+                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
             }
         }
     }
@@ -182,16 +185,17 @@ fun EmptyTaskText(
 fun taskItems(
     scope: LazyListScope,
     tasks: List<Task>,
-    navigateToDetail: (id: String) -> Unit
+    navigateToDetail: (id: String) -> Unit,
+    onTaskUpdate: (Task) -> Unit,
 ) {
     scope.itemsIndexed(items = tasks, key = { index, item -> "${item.id}$index" }) { _, item ->
         TaskItem(
-            title = item.title,
-            priority = item.priority,
-            hour = item.time.time,
-            date = item.time.date,
+            task = item,
             navigateToDetail = {
                 navigateToDetail(item.id)
+            },
+            onStatusChange = {
+                onTaskUpdate(item.copy(status = it))
             }
         )
     }

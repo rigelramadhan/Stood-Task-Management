@@ -26,6 +26,7 @@
     <string name="message_no_task_done">No task found for this status</string>
     <string name="label_status">Status</string>
     <string name="label_category">Category</string>
+    <string name="message_change_status">Change status?</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>
