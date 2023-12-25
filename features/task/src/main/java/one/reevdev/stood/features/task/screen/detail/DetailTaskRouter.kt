@@ -1,5 +1,6 @@
 package one.reevdev.stood.features.task.screen.detail
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,6 +66,16 @@ fun DetailTaskRouter(
         }
     }
 
+    LaunchedEffect(uiState.task) {
+        uiState.task?.let {
+            title = it.title
+            hour = it.time.time
+            date = it.time.date
+            priority = it.priority
+            status = it.status
+        }
+    }
+
     if (hasCategoriesBeenLoaded) {
         var category by remember {
             mutableStateOf(uiState.categories.first())
@@ -112,5 +123,10 @@ fun DetailTaskRouter(
                 onNavigateBack()
             }
         )
+
+        BackHandler {
+            taskAction.onSaveTask()
+            onNavigateBack()
+        }
     }
 }

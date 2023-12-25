@@ -35,6 +35,7 @@ fun TaskRouter(
         snackbarHostState = snackbarHostState,
         onStatusSelect = { viewModel.setFilter(it) },
         navigateToDetail = onTaskClick,
-        navigateToAddTask = navigateToAddTask
+        navigateToAddTask = navigateToAddTask,
+        onTaskUpdate = { viewModel.updateTask(it) }
     )
 }

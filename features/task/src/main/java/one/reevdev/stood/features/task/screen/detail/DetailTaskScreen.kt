@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -61,7 +60,6 @@ fun DetailTaskScreen(
     categoryList: List<Category>,
     taskAction: TaskAction,
     onDeleteTask: () -> Unit,
-//    navigateToEdit: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val priorityPickerBottomSheetState = rememberModalBottomSheetState()
@@ -174,15 +172,6 @@ fun DetailTaskScreen(
                         )
                     }
                 }
-            }
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp)
-                    .align(Alignment.BottomCenter),
-                onClick = taskAction.onSaveTask
-            ) {
-                Text(text = stringResource(R.string.action_save_task))
             }
             if (uiState.isLoading) {
                 Box(
