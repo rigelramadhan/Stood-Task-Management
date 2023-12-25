@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.dialog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

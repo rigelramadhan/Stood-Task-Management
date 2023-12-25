@@ -1,16 +1,20 @@
-package one.reevdev.stood.features.task.component
+package one.reevdev.stood.features.task.component.task
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import one.reevdev.stood.features.task.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,13 +26,16 @@ fun TaskToolbar(
     actions: Map<ImageVector, () -> Unit> = mapOf()
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier
+            .shadow(elevation = 2.dp),
         navigationIcon = {
-            IconButton(onClick = { onBackButtonClick?.invoke() }) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = stringResource(R.string.content_description_back_button)
-                )
+            onBackButtonClick?.let {
+                IconButton(onClick = { it() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                        contentDescription = stringResource(R.string.content_description_back_button)
+                    )
+                }
             }
         },
         title = {
@@ -46,6 +53,13 @@ fun TaskToolbar(
                     )
                 }
             }
-        }
+        },
+        colors = TopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            scrolledContainerColor = MaterialTheme.colorScheme.surface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            actionIconContentColor = MaterialTheme.colorScheme.onSurface
+        )
     )
 }

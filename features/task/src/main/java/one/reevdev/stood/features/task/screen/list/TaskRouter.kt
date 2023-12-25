@@ -24,8 +24,8 @@ fun TaskRouter(
         viewModel.getTasks()
     }
 
-    LaunchedEffect(uiState.error) {
-        uiState.error?.let {
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
             snackbarHostState.showSnackbar(message = it, withDismissAction = true)
         }
     }
@@ -33,7 +33,9 @@ fun TaskRouter(
     TaskScreen(
         uiState = uiState,
         snackbarHostState = snackbarHostState,
+        onStatusSelect = { viewModel.setFilter(it) },
         navigateToDetail = onTaskClick,
-        navigateToAddTask = navigateToAddTask
+        navigateToAddTask = navigateToAddTask,
+        onTaskUpdate = { viewModel.updateTask(it) }
     )
 }
