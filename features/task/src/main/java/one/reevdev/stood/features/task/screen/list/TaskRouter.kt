@@ -21,6 +21,7 @@ fun TaskRouter(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(true) {
+        viewModel.init()
         viewModel.getTasks()
     }
 
