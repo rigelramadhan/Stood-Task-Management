@@ -1,4 +1,4 @@
-package one.reevdev.stood.ui.theme
+package one.reevdev.stood.features.task.theme
 
 import android.app.Activity
 import android.os.Build

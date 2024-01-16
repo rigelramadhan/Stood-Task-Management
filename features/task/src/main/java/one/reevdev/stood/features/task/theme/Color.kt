@@ -1,4 +1,4 @@
-package one.reevdev.stood.ui.theme
+package one.reevdev.stood.features.task.theme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF005CBB)
