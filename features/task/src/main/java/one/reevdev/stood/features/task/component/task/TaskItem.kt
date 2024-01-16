@@ -1,5 +1,6 @@
 package one.reevdev.stood.features.task.component.task
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,12 +31,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
+import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.model.TaskStatus
+import one.reevdev.stood.core.domain.task.model.TaskTime
 import one.reevdev.stood.features.task.R
 import one.reevdev.stood.features.task.component.status.StatusFilterSelector
 import one.reevdev.stood.features.task.screen.add.Divider
+import one.reevdev.stood.features.task.theme.StoodTheme
 import one.reevdev.stood.features.task.utils.toComposeColor
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -71,7 +78,7 @@ fun TaskItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 18.dp, vertical = 12.dp),
+                    .padding(horizontal = 14.dp, vertical = 14.dp),
                 verticalAlignment = CenterVertically
             ) {
                 Box(
@@ -177,6 +184,27 @@ fun HourAndDateText(
                 modifier = Modifier,
                 text = hour,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Light)
+            )
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+fun TaskItemPreview() {
+    StoodTheme {
+        Surface {
+            TaskItem(
+                task = Task(
+                    id = "",
+                    title = "Do Chores",
+                    priority = TaskPriority.Normal,
+                    time = TaskTime("", "20.24", "24 January 2024"),
+                    category = Category("", "Work", "#2ff2de"),
+                    status = TaskStatus.ToDo
+                ),
+                navigateToDetail = {},
+                onStatusChange = {}
             )
         }
     }

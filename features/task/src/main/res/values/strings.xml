@@ -28,6 +28,9 @@
     <string name="label_category">Category</string>
     <string name="message_change_status">Change status?</string>
     <string name="label_due_time">Due time</string>
+    <string name="value_task_incomplete">Task\nIncomplete</string>
+    <string name="value_task_ongoing">Task\nOngoing</string>
+    <string name="value_task_completed">Task\nCompleted</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>
