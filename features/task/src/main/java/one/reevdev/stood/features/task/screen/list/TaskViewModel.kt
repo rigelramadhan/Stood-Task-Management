@@ -14,6 +14,9 @@ import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.features.task.utils.UiState
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,6 +60,7 @@ class TaskViewModel @Inject constructor(
                 _uiState.update {
                     uiState
                 }
+                getDate()
             }
         }
     }
@@ -99,6 +103,27 @@ class TaskViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getDate() {
+        val currentDate = LocalDate.now()
+        val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
+        val dayFormatter = DateTimeFormatter.ofPattern("dd", Locale.getDefault())
+        val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
+        val yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.getDefault())
+
+        val dayOfWeek = currentDate.format(dayOfWeekFormatter)
+        val day = currentDate.format(dayFormatter)
+        val month = currentDate.format(monthFormatter)
+        val year = currentDate.format(yearFormatter)
+
+        _uiState.update {
+            it.copy(
+                day = "$dayOfWeek, $day",
+                month = month,
+                year = year,
+            )
+        }
+    }
 }
 
 data class TaskUiState(
@@ -108,4 +133,7 @@ data class TaskUiState(
     val onGoingTasks: List<Task>? = null,
     val doneTasks: List<Task>? = null,
     val filter: TaskStatus = TaskStatus.All,
+    val day: String? = null,
+    val month: String? = null,
+    val year: String? = null,
 ) : UiState
