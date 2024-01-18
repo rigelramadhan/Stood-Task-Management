@@ -2,9 +2,12 @@ package one.reevdev.stood.features.task.screen.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,14 +28,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.features.task.R
 import one.reevdev.stood.features.task.component.status.StatusFilterSelector
 import one.reevdev.stood.features.task.component.task.TaskItem
-import one.reevdev.stood.features.task.component.task.TaskToolbar
-import one.reevdev.stood.features.task.screen.add.Divider
+import one.reevdev.stood.features.task.component.widget.TaskCounterCard
+import one.reevdev.stood.features.task.utils.orDefault
 
 @Composable
 fun TaskScreen(
@@ -47,7 +51,6 @@ fun TaskScreen(
     Scaffold(
         modifier = modifier,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        topBar = { TaskToolbar(title = stringResource(R.string.title_task_feature)) }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -61,15 +64,30 @@ fun TaskScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
+                    HomeDateDisplay(
+                        modifier = Modifier.padding(vertical = 18.dp),
+                        day = uiState.day,
+                        month = uiState.month,
+                        year = uiState.year
+                    )
+                }
+                item {
+                    TaskCountCards(
+                        modifier
+                            .padding(vertical = 12.dp),
+                        incompleteCounts = uiState.todoTasks?.size.orDefault(0),
+                        ongoingCounts = uiState.onGoingTasks?.size.orDefault(0),
+                        completedCounts = uiState.doneTasks?.size.orDefault(0)
+                    )
+                }
+                item {
                     StatusFilterSelector(
-                        modifier = Modifier,
+                        modifier = Modifier
+                            .padding(bottom = 16.dp),
                         statusList = TaskStatus.values().toList(),
                         isSelectedStatus = { uiState.filter == it },
                         onStatusSelect = onStatusSelect
                     )
-                }
-                item {
-                    Divider()
                 }
                 taskList(
                     scope = this,
@@ -113,60 +131,102 @@ fun taskList(
     when (uiState.filter) {
         TaskStatus.ToDo -> {
             uiState.todoTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_to_do_tasks)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_to_do_tasks)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
         TaskStatus.OnGoing -> {
             uiState.onGoingTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_on_going_task)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_on_going_task)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
         TaskStatus.Done -> {
             uiState.doneTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_done_tasks)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_done_tasks)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
         TaskStatus.All -> {
             uiState.todoTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_to_do_tasks)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_to_do_tasks)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.onGoingTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_on_going_task)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_on_going_task)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.doneTasks?.let { tasks ->
-                scope.item { Text(text = stringResource(R.string.label_done_tasks)) }
+                scope.item { TaskLabel(text = stringResource(R.string.label_done_tasks)) }
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
     }
+}
+
+@Composable
+fun TaskLabel(
+    modifier: Modifier = Modifier,
+    text: String
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.titleMedium
+    )
 }
 
 @Composable
@@ -198,5 +258,78 @@ fun taskItems(
                 onTaskUpdate(item.copy(status = it))
             }
         )
+    }
+}
+
+@Composable
+fun TaskCountCards(
+    modifier: Modifier = Modifier,
+    incompleteCounts: Int,
+    ongoingCounts: Int,
+    completedCounts: Int,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        TaskCounterCard(
+            modifier.weight(1f),
+            title = stringResource(R.string.value_task_incomplete),
+            count = incompleteCounts,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+        )
+        TaskCounterCard(
+            modifier.weight(1f),
+            title = stringResource(R.string.value_task_ongoing),
+            count = ongoingCounts,
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        )
+        TaskCounterCard(
+            modifier.weight(1f),
+            title = stringResource(R.string.value_task_completed),
+            count = completedCounts,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
+        )
+    }
+}
+
+@Composable
+fun HomeDateDisplay(
+    modifier: Modifier = Modifier,
+    day: String?,
+    month: String?,
+    year: String?,
+) {
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        day?.let {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 4.dp),
+                text = it,
+                style = MaterialTheme.typography.displaySmall
+            )
+        }
+        month?.let {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 2.dp),
+                text = it,
+                style = MaterialTheme.typography.titleLarge
+                    .copy(fontWeight = FontWeight.Normal)
+            )
+        }
+        year?.let {
+            Text(
+                modifier = Modifier,
+                text = it,
+                style = MaterialTheme.typography.titleLarge
+                    .copy(fontWeight = FontWeight.Normal)
+            )
+        }
     }
 }

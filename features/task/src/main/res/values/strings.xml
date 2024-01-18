@@ -20,14 +20,24 @@
     <string name="label_choose_the_priority">Choose the priority</string>
     <string name="action_select_category">Select a category</string>
     <string name="label_select_status">Select status</string>
-    <string name="label_to_do_tasks">To Do Tasks 💡</string>
-    <string name="label_on_going_task">On Going Task 🚙</string>
-    <string name="label_done_tasks">Done Tasks ✅</string>
+<!--    <string name="label_to_do_tasks">To Do Tasks 💡</string>-->
+<!--    <string name="label_on_going_task">On Going Task 🚙</string>-->
+<!--    <string name="label_done_tasks">Done Tasks ✅</string>-->
+    <string name="label_to_do_tasks">To Do Tasks</string>
+    <string name="label_on_going_task">On Going Task</string>
+    <string name="label_done_tasks">Done Tasks</string>
     <string name="message_no_task_done">No task found for this status</string>
     <string name="label_status">Status</string>
     <string name="label_category">Category</string>
     <string name="message_change_status">Change status?</string>
     <string name="label_due_time">Due time</string>
+    <string name="value_task_incomplete">Task\nIncomplete</string>
+    <string name="value_task_ongoing">Task\nOngoing</string>
+    <string name="value_task_completed">Task\nCompleted</string>
+    <string name="content_description_all_task_icon">All task icon</string>
+    <string name="content_description_todo_task_icon">Todo task icon</string>
+    <string name="content_description_on_going_task_icon">On going task icon</string>
+    <string name="content_description_done_task_icon">Done task icon</string>
     <string-array name="task_priorities">
         <item>Low</item>
         <item>Normal</item>

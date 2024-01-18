@@ -48,3 +48,5 @@ fun String.toComposeColor(): Color {
 
     return Color(red, green, blue)
 }
+
+fun Int?.orDefault(num: Int): Int = this ?: num
