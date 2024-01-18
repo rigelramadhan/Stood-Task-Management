@@ -47,6 +47,17 @@ fun AddTaskRouter(
         }
     }
 
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = it,
+                    withDismissAction = true
+                )
+            }
+        }
+    }
+
     if (hasCategoriesBeenLoaded) {
         var category by remember {
             mutableStateOf(uiState.categories.first())

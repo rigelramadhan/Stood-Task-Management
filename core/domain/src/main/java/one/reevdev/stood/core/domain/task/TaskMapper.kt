@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val DATE_FORMAT = "EEE, d MMMM yyyy"
+const val DATE_FORMAT = "dd MMMM yyyy"
 
 fun TaskWithCategory.toDomain(): Task = Task(
     id = task.id,
