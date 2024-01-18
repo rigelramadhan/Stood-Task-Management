@@ -64,35 +64,12 @@ fun TaskScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        uiState.day?.let {
-                            Text(
-                                modifier = Modifier,
-                                text = it,
-                                style = MaterialTheme.typography.headlineLarge
-                            )
-                        }
-                        uiState.month?.let {
-                            Text(
-                                modifier = Modifier,
-                                text = it,
-                                style = MaterialTheme.typography.titleLarge
-                                    .copy(fontWeight = FontWeight.Normal)
-                            )
-                        }
-                        uiState.year?.let {
-                            Text(
-                                modifier = Modifier,
-                                text = it,
-                                style = MaterialTheme.typography.titleLarge
-                                    .copy(fontWeight = FontWeight.Normal)
-                            )
-                        }
-                    }
+                    HomeDateDisplay(
+                        modifier = Modifier.padding(vertical = 18.dp),
+                        day = uiState.day,
+                        month = uiState.month,
+                        year = uiState.year
+                    )
                 }
                 item {
                     TaskCountCards(
@@ -158,7 +135,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
@@ -168,7 +150,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
@@ -178,7 +165,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
 
@@ -188,7 +180,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.onGoingTasks?.let { tasks ->
@@ -196,7 +193,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
             scope.item { Spacer(modifier = Modifier.height(16.dp)) }
             uiState.doneTasks?.let { tasks ->
@@ -204,7 +206,12 @@ fun taskList(
                 if (tasks.isEmpty()) scope.item {
                     EmptyTaskText()
                 }
-                taskItems(scope = scope, tasks = tasks, navigateToDetail = navigateToDetail, onTaskUpdate = onTaskUpdate)
+                taskItems(
+                    scope = scope,
+                    tasks = tasks,
+                    navigateToDetail = navigateToDetail,
+                    onTaskUpdate = onTaskUpdate
+                )
             }
         }
     }
@@ -269,19 +276,60 @@ fun TaskCountCards(
             modifier.weight(1f),
             title = stringResource(R.string.value_task_incomplete),
             count = incompleteCounts,
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
         )
         TaskCounterCard(
             modifier.weight(1f),
             title = stringResource(R.string.value_task_ongoing),
             count = ongoingCounts,
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
         )
         TaskCounterCard(
             modifier.weight(1f),
             title = stringResource(R.string.value_task_completed),
             count = completedCounts,
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
         )
+    }
+}
+
+@Composable
+fun HomeDateDisplay(
+    modifier: Modifier = Modifier,
+    day: String?,
+    month: String?,
+    year: String?,
+) {
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        day?.let {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 4.dp),
+                text = it,
+                style = MaterialTheme.typography.displaySmall
+            )
+        }
+        month?.let {
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 2.dp),
+                text = it,
+                style = MaterialTheme.typography.titleLarge
+                    .copy(fontWeight = FontWeight.Normal)
+            )
+        }
+        year?.let {
+            Text(
+                modifier = Modifier,
+                text = it,
+                style = MaterialTheme.typography.titleLarge
+                    .copy(fontWeight = FontWeight.Normal)
+            )
+        }
     }
 }

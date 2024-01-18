@@ -27,27 +27,6 @@ class TaskViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TaskUiState(isLoading = true))
     val uiState: StateFlow<TaskUiState> by lazy { _uiState }
 
-    fun init() {
-        val currentDate = LocalDate.now()
-        val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
-        val dayFormatter = DateTimeFormatter.ofPattern("dd", Locale.getDefault())
-        val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
-        val yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.getDefault())
-
-        val dayOfWeek = currentDate.format(dayOfWeekFormatter)
-        val day = currentDate.format(dayFormatter)
-        val month = currentDate.format(monthFormatter)
-        val year = currentDate.format(yearFormatter)
-
-        _uiState.update {
-            it.copy(
-                day = "$dayOfWeek, $day",
-                month = month,
-                year = year,
-            )
-        }
-    }
-
     fun getTasks() {
         _uiState.update {
             it.copy(isLoading = true)
@@ -81,6 +60,7 @@ class TaskViewModel @Inject constructor(
                 _uiState.update {
                     uiState
                 }
+                getDate()
             }
         }
     }
@@ -121,6 +101,27 @@ class TaskViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun getDate() {
+        val currentDate = LocalDate.now()
+        val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
+        val dayFormatter = DateTimeFormatter.ofPattern("dd", Locale.getDefault())
+        val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
+        val yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.getDefault())
+
+        val dayOfWeek = currentDate.format(dayOfWeekFormatter)
+        val day = currentDate.format(dayFormatter)
+        val month = currentDate.format(monthFormatter)
+        val year = currentDate.format(yearFormatter)
+
+        _uiState.update {
+            it.copy(
+                day = "$dayOfWeek, $day",
+                month = month,
+                year = year,
+            )
         }
     }
 }
