@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+const val DATE_FORMAT = "dd MMMM yyyy"
+
 fun TaskWithCategory.toDomain(): Task = Task(
     id = task.id,
     title = task.title,
@@ -66,7 +68,7 @@ fun String.toTaskTime(): TaskTime {
     val outputTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     val formattedTime = date?.let { outputTimeFormat.format(it) }.orEmpty()
 
-    val outputDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.US)
+    val outputDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
     val formattedDate = date?.let { outputDateFormat.format(it) }.orEmpty()
 
     return TaskTime(
@@ -77,7 +79,7 @@ fun String.toTaskTime(): TaskTime {
 }
 
 fun mapToApiString(hour: String, date: String): String {
-    val inputFormat = SimpleDateFormat("dd MMMM yyyy'T'HH:mm:ss'Z'", Locale.US)
+    val inputFormat = SimpleDateFormat("$DATE_FORMAT'T'HH:mm:ss'Z'", Locale.US)
     val dateTimeString = "${date}T$hour:00Z"
     val dateFormat: Date? = inputFormat.parse(dateTimeString)
 
