@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(":cosmoe"))
 
     implementation(libs.hilt)
     implementation(libs.androidx.material3.android)

@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":cosmoe"))
+
     // # Shared
     implementation(libs.androidx.core.ktx)
 

@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":core:data"))
+    implementation(project(":cosmoe"))
 
     // # Shared
     implementation(libs.androidx.core.ktx)
