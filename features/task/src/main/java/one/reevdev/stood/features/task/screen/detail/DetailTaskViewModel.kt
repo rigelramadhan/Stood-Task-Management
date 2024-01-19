@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import one.reevdev.cosmoe.ui.compose.UiState
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.params.TaskUiParams
 import one.reevdev.stood.core.domain.task.toDomain
-import one.reevdev.stood.features.task.utils.UiState
 import javax.inject.Inject
 
 @HiltViewModel
