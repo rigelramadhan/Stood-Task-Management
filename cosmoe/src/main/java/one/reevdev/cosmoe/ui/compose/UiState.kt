@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.task.utils
+package one.reevdev.cosmoe.ui.compose
 
 interface UiState {
     val isLoading: Boolean

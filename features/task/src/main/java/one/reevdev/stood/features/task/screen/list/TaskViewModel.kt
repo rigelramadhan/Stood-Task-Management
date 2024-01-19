@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import one.reevdev.cosmoe.ui.compose.UiState
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
 import one.reevdev.stood.core.domain.task.model.TaskStatus
-import one.reevdev.stood.features.task.utils.UiState
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
