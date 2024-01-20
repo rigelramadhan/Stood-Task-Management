@@ -23,9 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import one.reevdev.cosmoe.utils.toComposeColor
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.features.task.R
-import one.reevdev.stood.features.task.utils.toComposeColor
 
 @Composable
 fun CategoryDropdown(
