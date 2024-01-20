@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import one.reevdev.cosmoe.utils.toComposeColor
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskPriority
@@ -42,7 +44,6 @@ import one.reevdev.stood.features.task.R
 import one.reevdev.stood.features.task.component.status.StatusFilterSelector
 import one.reevdev.stood.features.task.screen.add.Divider
 import one.reevdev.stood.features.task.theme.StoodTheme
-import one.reevdev.stood.features.task.utils.toComposeColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -103,6 +104,10 @@ fun TaskItem(
                                 navigateToDetail()
                             },
                         shape = CircleShape,
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                        )
 
                     ) {
                         Text(

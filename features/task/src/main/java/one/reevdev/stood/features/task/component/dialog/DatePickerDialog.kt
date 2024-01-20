@@ -8,7 +8,7 @@ import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import one.reevdev.stood.features.task.utils.toFormattedDate
+import one.reevdev.cosmoe.utils.toFormattedDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

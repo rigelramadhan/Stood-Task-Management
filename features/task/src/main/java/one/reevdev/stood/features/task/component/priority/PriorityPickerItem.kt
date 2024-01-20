@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import one.reevdev.cosmoe.utils.toComposeColor
 import one.reevdev.stood.core.domain.task.model.TaskPriority
-import one.reevdev.stood.features.task.utils.toComposeColor
 
 @Composable
 fun PriorityPickerItem(
