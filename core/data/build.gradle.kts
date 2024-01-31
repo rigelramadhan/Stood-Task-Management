@@ -55,10 +55,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // # Module Specific
+    // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
+    
+    // Retrofit
+    implementation(libs.retrofit2.retrofit2)
+    implementation(libs.retrofit2.converter.gson)
+
+    // Ktor - To be used in the future
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.android)
