@@ -14,6 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 
+// Unused for now
 object KtorConfig {
     private const val TIME_OUT = 60_000
 

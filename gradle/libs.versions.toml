@@ -1,6 +1,7 @@
 [versions]
 activityCompose = "1.8.1"
 androidGradlePlugin = "8.2.1"
+androidxComposeBom = "2023.03.00"
 androidxCore = "1.12.0"
 androidxHiltNavigationCompose = "1.1.0"
 androidxJunit = "1.1.5"
@@ -18,6 +19,13 @@ threetenbp = "1.4.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-ui-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-ui-graphic = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-ui-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
