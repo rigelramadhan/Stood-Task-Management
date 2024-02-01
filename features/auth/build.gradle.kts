@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "one.reevdev.stood.features.task"
+    namespace = "one.reevdev.stood.features.auth"
     compileSdk = 34
 
     defaultConfig {
@@ -17,9 +17,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-    buildFeatures {
-        compose = true
-    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,9 +26,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -50,11 +45,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
     // Hilt
     implementation(libs.hilt)
     ksp(libs.hiltCompiler)
@@ -72,8 +62,4 @@ dependencies {
 
     // Date and Time Library
     implementation(libs.org.threeten.threetenbp)
-}
-
-kapt {
-    correctErrorTypes = true
 }
