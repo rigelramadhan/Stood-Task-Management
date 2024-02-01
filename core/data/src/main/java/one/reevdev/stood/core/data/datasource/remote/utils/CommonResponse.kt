@@ -1,4 +1,4 @@
-package one.reevdev.stood.core.data.datasource.remote.task.model
+package one.reevdev.stood.core.data.datasource.remote.utils
 
 import com.google.gson.annotations.SerializedName
 

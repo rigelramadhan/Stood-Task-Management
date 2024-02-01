@@ -1,18 +1,14 @@
 package one.reevdev.stood.core.data.datasource.remote.task.model
 
 import com.google.gson.annotations.SerializedName
+import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 
 data class RegisterResponse(
-
-	@field:SerializedName("metadata")
-	val metadata: Metadata? = null,
 
 	@field:SerializedName("data")
 	val data: RegisterData? = null,
 
-	@field:SerializedName("message")
-	val message: Message? = null
-)
+) : BaseStoodResponse()
 
 data class RegisterData(
 
