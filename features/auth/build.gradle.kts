@@ -17,7 +17,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-
+    buildFeatures {
+        compose = true
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -26,6 +28,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -39,6 +44,7 @@ android {
 dependencies {
     implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(":cosmoe"))
+    implementation(project(":features:common"))
 
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -55,6 +61,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.ui)
     implementation(libs.androidx.compose.ui.ui.graphic)
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
+    implementation(libs.androidx.compose.material.material.icons.extended)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.ui.tooling)
@@ -62,4 +69,8 @@ dependencies {
 
     // Date and Time Library
     implementation(libs.org.threeten.threetenbp)
+}
+
+kapt {
+    correctErrorTypes = true
 }

@@ -1,4 +1,4 @@
-package one.reevdev.stood.core.data.datasource.remote.task.model
+package one.reevdev.stood.core.data.datasource.remote.auth.model
 
 import com.google.gson.annotations.SerializedName
 import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
@@ -8,7 +8,7 @@ data class LoginResponse(
     @field:SerializedName("data")
     val data: LoginData? = null,
 
-) : BaseStoodResponse()
+    ) : BaseStoodResponse()
 
 data class LoginData(
 

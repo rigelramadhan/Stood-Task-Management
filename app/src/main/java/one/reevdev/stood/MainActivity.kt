@@ -8,8 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+import one.reevdev.stood.features.common.theme.StoodTheme
 import one.reevdev.stood.ui.StoodApp
-import one.reevdev.stood.ui.theme.StoodTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
