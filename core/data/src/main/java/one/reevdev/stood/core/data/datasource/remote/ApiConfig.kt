@@ -1,6 +1,8 @@
 package one.reevdev.stood.core.data.datasource.remote
 
-object ApiConfig {
+import one.reevdev.stood.core.data.utils.AppConstants
 
-    const val apiVersion = "v1"
+object ApiConfig {
+    val BASE_URL = AppConstants.getApiUrl()
+    const val API_VERSION = "v1"
 }
