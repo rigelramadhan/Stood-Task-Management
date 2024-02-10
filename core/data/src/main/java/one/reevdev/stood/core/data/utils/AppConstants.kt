@@ -6,4 +6,5 @@ object AppConstants {
     }
 
     external fun getApiUrl(): String
+    external fun getEncryptionKey(): String
 }

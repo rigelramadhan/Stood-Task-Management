@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import one.reevdev.stood.core.data.datasource.remote.ApiConfig
+import one.reevdev.stood.core.data.datasource.remote.AuthInterceptor
 import one.reevdev.stood.core.data.datasource.remote.auth.AuthApiService
 import one.reevdev.stood.core.data.datasource.remote.task.TaskApiService
 import retrofit2.Retrofit
@@ -19,11 +20,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitClient(): Retrofit {
+    fun provideRetrofitClient(authInterceptor: AuthInterceptor): Retrofit {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
         return Retrofit.Builder()
             .baseUrl(ApiConfig.BASE_URL)
