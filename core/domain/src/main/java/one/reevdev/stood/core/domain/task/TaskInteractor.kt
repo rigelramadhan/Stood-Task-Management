@@ -2,7 +2,7 @@ package one.reevdev.stood.core.domain.task
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import one.reevdev.stood.core.data.repository.task.TaskRepository
+import one.reevdev.stood.core.data.repository.task.ITaskRepository
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
@@ -10,7 +10,7 @@ import one.reevdev.stood.core.domain.task.model.TaskStatus
 import javax.inject.Inject
 
 class TaskInteractor @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: ITaskRepository
 ) : TaskUseCase {
     override fun getTasks(): Flow<List<Task>> {
         return taskRepository.getTasks().map { list ->

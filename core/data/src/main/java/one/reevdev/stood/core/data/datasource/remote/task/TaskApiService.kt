@@ -15,21 +15,21 @@ import retrofit2.http.Path
 
 interface TaskApiService {
 
-    @POST("${ApiConfig.apiVersion}/task")
+    @POST("${ApiConfig.API_VERSION}/task")
     fun createTask(@Body taskParam: TaskParam): Flow<BaseStoodResponse>
 
-    @GET("${ApiConfig.apiVersion}/task")
+    @GET("${ApiConfig.API_VERSION}/task")
     fun getTaskList(): Flow<TaskListResponse>
 
-    @GET("${ApiConfig.apiVersion}/task/{id}")
+    @GET("${ApiConfig.API_VERSION}/task/{id}")
     fun getTaskById(@Path("id") id: String): Flow<TaskResponse>
 
-    @PUT("${ApiConfig.apiVersion}/task/{id}")
+    @PUT("${ApiConfig.API_VERSION}/task/{id}")
     fun updateTask(
         @Path("id") id: String,
         @Body taskParam: TaskParam
     ): Flow<BaseStoodResponse>
 
-    @DELETE("${ApiConfig.apiVersion}/task/{id}")
+    @DELETE("${ApiConfig.API_VERSION}/task/{id}")
     fun deleteTask(@Path("id") id: String): Flow<BaseStoodResponse>
 }
