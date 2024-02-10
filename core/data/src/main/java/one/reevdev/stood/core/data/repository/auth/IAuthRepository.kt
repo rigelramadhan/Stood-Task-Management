@@ -12,4 +12,5 @@ interface IAuthRepository {
 
     fun register(registerParams: RegisterParam): Flow<RegisterResponse>
 
+    fun logout(): Flow<Boolean>
 }

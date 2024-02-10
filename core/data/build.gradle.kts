@@ -60,10 +60,14 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
+
+    // DataStore
+    implementation(libs.androidx.datastore.datastore)
     
     // Retrofit
     implementation(libs.retrofit2.retrofit2)
     implementation(libs.retrofit2.converter.gson)
+    implementation(libs.okhttp3.logging.interceptor)
 
     // Ktor - To be used in the future
     implementation(libs.ktor.client.core)
