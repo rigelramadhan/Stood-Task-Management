@@ -57,6 +57,7 @@ dependencies {
     implementation(project(mapOf("path" to ":features:task")))
     implementation(project(":cosmoe"))
     implementation(project(":features:common"))
+    implementation(project(":features:auth"))
 
     // # Shared
     implementation(libs.androidx.core.ktx)
