@@ -1,6 +1,5 @@
 package one.reevdev.stood.features.auth.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,14 +21,9 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,19 +33,26 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable
-fun LoginScreen() {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(false) }
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    username: String,
+    password: String,
+    isPasswordVisible: Boolean,
+    onUsernameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onPasswordVisibilityClick: (Boolean) -> Unit,
+    onLoginButtonClick: () -> Unit,
+) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -60,7 +61,7 @@ fun LoginScreen() {
 
         OutlinedTextField(
             value = username,
-            onValueChange = { username = it },
+            onValueChange = onUsernameChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -79,7 +80,7 @@ fun LoginScreen() {
 
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = onPasswordChange,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -92,22 +93,22 @@ fun LoginScreen() {
             },
             trailingIcon = {
                 val icon =
-                    if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff
-                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                    if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+                IconButton(onClick = { onPasswordVisibilityClick(!isPasswordVisible) }) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null
                     )
                 }
             },
-            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    // Perform login action here
+                    onLoginButtonClick()
                 }
             ),
             shape = RoundedCornerShape(16.dp)
@@ -117,7 +118,7 @@ fun LoginScreen() {
 
         Button(
             onClick = {
-                // Perform login action here
+                onLoginButtonClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,14 +132,6 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "Login")
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Forgot password?",
-            modifier = Modifier.clickable { /* Handle forgot password click here */ },
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }
 
@@ -146,6 +139,14 @@ fun LoginScreen() {
 @Composable
 fun LoginScreenPreview() {
     StoodTheme {
-        LoginScreen()
+        LoginScreen(
+            username = emptyString(),
+            password = emptyString(),
+            isPasswordVisible = false,
+            onUsernameChange = {},
+            onPasswordChange = {},
+            onPasswordVisibilityClick = {},
+            onLoginButtonClick = {},
+        )
     }
 }
