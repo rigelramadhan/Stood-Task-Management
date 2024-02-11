@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.auth.screen
+package one.reevdev.stood.features.auth.screen.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

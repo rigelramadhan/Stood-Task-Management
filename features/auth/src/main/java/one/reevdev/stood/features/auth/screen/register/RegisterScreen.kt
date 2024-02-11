@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.auth.screen
+package one.reevdev.stood.features.auth.screen.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
@@ -18,9 +20,9 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,16 +38,22 @@ import one.reevdev.stood.features.auth.R
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier,
     username: String,
+    email: String,
+    displayName: String,
     password: String,
+    confirmPassword: String,
     isPasswordVisible: Boolean,
     onUsernameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onDisplayNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit,
     onPasswordVisibilityClick: (Boolean) -> Unit,
-    onLoginButtonClick: () -> Unit,
     onRegisterButtonClick: () -> Unit,
+    onLoginButtonClick: () -> Unit,
 ) {
 
     Column(
@@ -68,6 +76,44 @@ fun LoginScreen(
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Person,
+                    contentDescription = null
+                )
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            shape = RoundedCornerShape(16.dp)
+        )
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = onEmailChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text(text = stringResource(id = R.string.label_email)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = null
+                )
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            shape = RoundedCornerShape(16.dp)
+        )
+
+        OutlinedTextField(
+            value = displayName,
+            onValueChange = onDisplayNameChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text(text = stringResource(id = R.string.label_display_name)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
                     contentDescription = null
                 )
             },
@@ -102,12 +148,38 @@ fun LoginScreen(
             },
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Password
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    // Move focus to the next field
+                }
+            ),
+            shape = RoundedCornerShape(16.dp)
+        )
+
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = onConfirmPasswordChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text(text = stringResource(id = R.string.label_confirm_password)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null
+                )
+            },
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onLoginButtonClick()
+                    onRegisterButtonClick()
                 }
             ),
             shape = RoundedCornerShape(16.dp)
@@ -117,20 +189,7 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                onLoginButtonClick()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(text = stringResource(R.string.action_login))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedButton(
-            onClick = {
-                onLoginButtonClick()
+                onRegisterButtonClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,22 +197,34 @@ fun LoginScreen(
         ) {
             Text(text = stringResource(R.string.action_register))
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextButton(onClick = onLoginButtonClick) {
+            Text(text = stringResource(R.string.already_have_an_account))
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun RegisterScreenPreview() {
     StoodTheme {
-        LoginScreen(
+        RegisterScreen(
             username = emptyString(),
+            email = emptyString(),
+            displayName = emptyString(),
             password = emptyString(),
+            confirmPassword = emptyString(),
             isPasswordVisible = false,
             onUsernameChange = {},
+            onEmailChange = {},
+            onDisplayNameChange = {},
             onPasswordChange = {},
+            onConfirmPasswordChange = {},
             onPasswordVisibilityClick = {},
-            onLoginButtonClick = {},
             onRegisterButtonClick = {},
+            onLoginButtonClick = {}
         )
     }
 }

@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.auth.screen
+package one.reevdev.stood.features.auth.screen.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,7 +29,13 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             authUseCase.login(loginParams)
                 .catch {
-
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong.", // TODO: Update later
+                            isLoginSuccess = false,
+                        )
+                    }
                 }
                 .collect { result ->
                     if (result.accessToken.isNotEmpty())
@@ -44,7 +50,7 @@ class LoginViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = "Something went wrong.", // Update later
+                                errorMessage = "Something went wrong.", // TODO: Update later
                                 isLoginSuccess = false,
                             )
                         }
