@@ -16,6 +16,7 @@ import one.reevdev.stood.core.domain.auth.params.LoginParams
 fun LoginRoute(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
+    onRegisterButtonClick: () -> Unit,
     onLoginSuccess: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,6 +43,7 @@ fun LoginRoute(
                 password = password,
             )
             viewModel.login(loginParams)
-        }
+        },
+        onRegisterButtonClick = onRegisterButtonClick,
     )
 }
