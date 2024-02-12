@@ -15,11 +15,19 @@ fun NavController.navigateToTask(navOptions: NavOptions? = null) {
     this.navigate(TaskScreens.Task.route, navOptions)
 }
 
-fun NavGraphBuilder.taskScreen(onTaskClick: (id: String) -> Unit, navigateToAddTask: () -> Unit) {
+fun NavGraphBuilder.taskScreen(
+    onTaskClick: (id: String) -> Unit,
+    navigateToAddTask: () -> Unit,
+    onUnauthorized: () -> Unit,
+) {
     composable(
         route = TaskScreens.Task.route,
     ) {
-        TaskRouter(onTaskClick = onTaskClick, navigateToAddTask = navigateToAddTask)
+        TaskRouter(
+            onTaskClick = onTaskClick,
+            navigateToAddTask = navigateToAddTask,
+            onUnauthorized = onUnauthorized
+        )
     }
 }
 

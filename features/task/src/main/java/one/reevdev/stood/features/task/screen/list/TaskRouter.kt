@@ -16,12 +16,13 @@ fun TaskRouter(
     viewModel: TaskViewModel = hiltViewModel(),
     onTaskClick: (id: String) -> Unit,
     navigateToAddTask: () -> Unit,
+    onUnauthorized: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(true) {
-        viewModel.getTasks()
+        viewModel.getTasks(onUnauthorized = onUnauthorized)
     }
 
     LaunchedEffect(uiState.errorMessage) {

@@ -16,6 +16,7 @@ import one.reevdev.stood.core.domain.task.model.TaskParams
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
+import java.io.IOException
 import java.util.Locale
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class TaskViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TaskUiState(isLoading = true))
     val uiState: StateFlow<TaskUiState> by lazy { _uiState }
 
-    fun getTasks() {
+    fun getTasks(onUnauthorized: (() -> Unit)? = null) {
         _uiState.update {
             it.copy(isLoading = true)
         }
@@ -49,12 +50,16 @@ class TaskViewModel @Inject constructor(
                     onGoingTasks = onGoingTasks,
                     doneTasks = doneTasks
                 )
-            }.catch {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Something went wrong" // TODO: To be replaced by API error message
-                    )
+            }.catch { error ->
+                if (error is IOException) {
+                    onUnauthorized?.invoke()
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong" // TODO: To be replaced by API error message
+                        )
+                    }
                 }
             }.collect { uiState ->
                 _uiState.update {

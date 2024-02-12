@@ -31,7 +31,9 @@ fun StoodApp(
         // Task
         taskScreen(
             onTaskClick = { navController.navigateToDetail(it) },
-            navigateToAddTask = { navController.navigateToAddTaskScreen() })
+            navigateToAddTask = { navController.navigateToAddTaskScreen() },
+            onUnauthorized = { navController.navigateToLogin() }
+        )
         taskDetailScreen { navController.navigateUp() }
         taskAddTaskScreen { navController.navigateUp() }
 
