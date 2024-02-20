@@ -2,6 +2,8 @@ package one.reevdev.stood.core.data.datasource.remote.task
 
 import kotlinx.coroutines.flow.Flow
 import one.reevdev.stood.core.data.datasource.remote.ApiConfig
+import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryListResponse
+import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskListResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
@@ -32,4 +34,10 @@ interface TaskApiService {
 
     @DELETE("${ApiConfig.API_VERSION}/task/{id}")
     fun deleteTask(@Path("id") id: String): Flow<BaseStoodResponse>
+
+    @GET("${ApiConfig.API_VERSION}/category")
+    fun getCategoryList(): Flow<CategoryListResponse>
+
+    @GET("${ApiConfig.API_VERSION}/categoryById/{id}")
+    fun getCategoryById(@Path("id") id: Int): Flow<CategoryResponse>
 }
