@@ -32,6 +32,15 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
             )
         }
     }
+
+    suspend fun insertTask(taskEntity: TaskEntity) {
+        taskDao.insertTask(taskEntity)
+    }
+
+    suspend fun insertTask(taskEntity: List<TaskEntity>) {
+        taskDao.insertTask(taskEntity)
+    }
+
     suspend fun updateTask(id: String, taskParams: TaskEntityParams) {
         with(taskParams) {
             taskDao.updateTask(
@@ -52,6 +61,10 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
 
     suspend fun insertCategory(category: CategoryEntity) {
         taskDao.insertCategory(category)
+    }
+
+    suspend fun insertCategories(category: List<CategoryEntity>) {
+        taskDao.insertCategories(category)
     }
 
     fun getCategories() = taskDao.getCategories()

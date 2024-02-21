@@ -1,15 +1,20 @@
 package one.reevdev.stood.core.data.repository.task
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import one.reevdev.cosmoe.utils.orDefault
+import one.reevdev.cosmoe.utils.toList
 import one.reevdev.stood.core.data.datasource.local.task.TaskLocalDataSource
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
+import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
 import one.reevdev.stood.core.data.datasource.remote.task.TaskRemoteDataSource
 import one.reevdev.stood.core.data.utils.Resource
 import one.reevdev.stood.core.data.utils.networkBoundResource
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,25 +28,48 @@ class TaskRepository @Inject constructor(
             localDataSource.getTasks()
         },
         fetch = {
+            getCategories()
             remoteDataSource.getTaskList().map {
                 it.data
             }
         },
         saveFetchResult = {
-
+            localDataSource.insertTask(it.firstOrNull()?.map { task -> task.toEntity() }
+                .orDefault(emptyList()))
         },
     )
 
-    override fun getTaskById(id: String): Flow<Resource<TaskWithCategory>> {
-        TODO("Not yet implemented")
-    }
+    override fun getTaskById(id: String): Flow<Resource<TaskWithCategory>> = networkBoundResource(
+        query = {
+            localDataSource.getTaskById(id)
+        },
+        fetch = {
+            remoteDataSource.getTaskById(id)
+        },
+        saveFetchResult = { response ->
+            localDataSource.insertTask(response.map { it.toEntity() }.first().toList())
+        }
+    )
 
     override fun getTaskByStatus(status: String): Flow<Resource<List<TaskWithCategory>>> {
-        TODO("Not yet implemented")
+        return localDataSource.getTaskByStatus(status).map { Resource.Success(it) }
     }
 
     override suspend fun createTask(taskParams: TaskEntityParams) {
-        TODO("Not yet implemented")
+        with(taskParams) {
+            val entity = TaskEntity(
+                    id = "${Calendar.getInstance().timeInMillis}task-$priority",
+                    title = title,
+                    priority = priority,
+                    time = time,
+                    categoryId = categoryId,
+                    status = status
+                )
+            localDataSource.insertTask(
+                entity
+            )
+            remoteDataSource.createTask()
+        }
     }
 
     override suspend fun updateTask(id: String, taskParams: TaskEntityParams) {
@@ -52,9 +80,18 @@ class TaskRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getCategories(): Flow<Resource<List<CategoryEntity>>> {
-        TODO("Not yet implemented")
-    }
+    override fun getCategories(): Flow<Resource<List<CategoryEntity>>> = networkBoundResource(
+        query = {
+            localDataSource.getCategories()
+        },
+        fetch = {
+            remoteDataSource.getCategoryList()
+        },
+        saveFetchResult = { response ->
+            localDataSource.insertCategories(response.map { list -> list.data?.map { it.toEntity() } }
+                .firstOrNull().orEmpty())
+        },
+    )
 
     override suspend fun createCategory(category: CategoryEntity) {
         TODO("Not yet implemented")
@@ -68,7 +105,7 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getCategoryById(id.toIntOrNull().orDefault(0))
         },
         saveFetchResult = {
-            localDataSource.insertCategory()
+            localDataSource.insertCategory(it.first().toEntity())
         }
     )
 }
