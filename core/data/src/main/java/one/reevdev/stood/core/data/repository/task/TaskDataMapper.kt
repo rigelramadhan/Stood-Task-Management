@@ -7,20 +7,29 @@ import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
 import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
+import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 
-fun CategoryResponse?.toEntity() = CategoryEntity(
-    id = this?.id.toString(),
-    name = this?.name.orEmpty(),
+fun CategoryResponse.toEntity() = CategoryEntity(
+    id = id.toString(),
+    name = name.orEmpty(),
     color = emptyString(),
 )
 
-fun TaskResponse?.toEntity() = TaskEntity(
-    id = this?.id.toString(),
-    title = this?.title.orEmpty(),
-    priority = this?.priority.orDefault(2),
-    time = this?.dueTime.orEmpty(),
-    categoryId = this?.categoryId.toString(),
-    status = this?.taskStatus.orEmpty()
+fun TaskResponse.toEntity() = TaskEntity(
+    id = id.toString(),
+    title = title.orEmpty(),
+    priority = priority.orDefault(2),
+    time = dueTime.orEmpty(),
+    categoryId = categoryId.toString(),
+    status = taskStatus.orEmpty(),
+    periodic = periodic.orEmpty()
 )
 
-fun TaskEntityParams.toRequestParams() = // TODO: Map
+fun TaskEntityParams.toRequestParams() = TaskParam(
+    dueTime = time,
+    periodic = periodic,
+    priority = priority,
+    title = title,
+    categoryId = categoryId.toIntOrNull().orDefault(0),
+    taskStatus = status
+)

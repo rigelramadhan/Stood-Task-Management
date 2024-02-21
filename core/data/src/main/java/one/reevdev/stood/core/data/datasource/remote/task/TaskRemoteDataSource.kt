@@ -5,6 +5,7 @@ import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryListResp
 import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskListResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
+import one.reevdev.stood.core.data.datasource.remote.task.param.CategoryParam
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 import javax.inject.Inject
@@ -30,6 +31,10 @@ class TaskRemoteDataSource @Inject constructor(
 
     override fun deleteTask(id: String): Flow<BaseStoodResponse> {
         return apiService.deleteTask(id)
+    }
+
+    override fun createCategory(categoryParam: CategoryParam): Flow<BaseStoodResponse> {
+        TODO("Not yet implemented")
     }
 
     override fun getCategoryList(): Flow<CategoryListResponse> {

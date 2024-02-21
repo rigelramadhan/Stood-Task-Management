@@ -6,6 +6,7 @@ import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryListResp
 import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskListResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
+import one.reevdev.stood.core.data.datasource.remote.task.param.CategoryParam
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 import retrofit2.http.Body
@@ -34,6 +35,9 @@ interface TaskApiService {
 
     @DELETE("${ApiConfig.API_VERSION}/task/{id}")
     fun deleteTask(@Path("id") id: String): Flow<BaseStoodResponse>
+
+    @POST("${ApiConfig.API_VERSION}/category")
+    fun createCategory(@Body categoryParam: CategoryParam): Flow<BaseStoodResponse>
 
     @GET("${ApiConfig.API_VERSION}/category")
     fun getCategoryList(): Flow<CategoryListResponse>
