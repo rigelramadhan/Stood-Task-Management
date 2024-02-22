@@ -1,11 +1,9 @@
 package one.reevdev.stood.core.data.repository.task
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import one.reevdev.cosmoe.utils.orDefault
-import one.reevdev.cosmoe.utils.toList
 import one.reevdev.stood.core.data.datasource.local.task.TaskLocalDataSource
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
@@ -30,13 +28,10 @@ class TaskRepository @Inject constructor(
         },
         fetch = {
             getCategories()
-            remoteDataSource.getTaskList().map {
-                it.data
-            }
+            remoteDataSource.getTaskList().data
         },
         saveFetchResult = {
-            localDataSource.insertTask(it.firstOrNull()?.map { task -> task.toEntity() }
-                .orDefault(emptyList()))
+            localDataSource.insertTask(it.map { task -> task.toEntity() })
         },
     )
 
@@ -48,7 +43,7 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getTaskById(id)
         },
         saveFetchResult = { response ->
-            localDataSource.insertTask(response.map { it.toEntity() }.first().toList())
+            localDataSource.insertTask(response.toEntity())
         }
     )
 
@@ -56,7 +51,7 @@ class TaskRepository @Inject constructor(
         return localDataSource.getTaskByStatus(status).map { Resource.Success(it) }
     }
 
-    override suspend fun createTask(taskParams: TaskEntityParams) {
+    override fun createTask(taskParams: TaskEntityParams): Flow<Resource<String>> = flow {
         with(taskParams) {
             val entity = TaskEntity(
                 id = "${Calendar.getInstance().timeInMillis}task-$priority",
@@ -70,18 +65,33 @@ class TaskRepository @Inject constructor(
             localDataSource.insertTask(
                 entity
             )
-            remoteDataSource.createTask(taskParams.toRequestParams())
+        }
+        try {
+            val request = remoteDataSource.createTask(taskParams.toRequestParams())
+            emit(Resource.Success(request.message?.body.orEmpty()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e, e.message.toString()))
         }
     }
 
-    override suspend fun updateTask(id: String, taskParams: TaskEntityParams) {
+    override fun updateTask(id: String, taskParams: TaskEntityParams) = flow {
         localDataSource.updateTask(id, taskParams)
-        remoteDataSource.updateTask(id, taskParams.toRequestParams())
+        try {
+            val request = remoteDataSource.updateTask(id, taskParams.toRequestParams())
+            emit(Resource.Success(request.message?.body.orEmpty()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e, e.message.toString()))
+        }
     }
 
-    override suspend fun deleteTask(id: String) {
+    override fun deleteTask(id: String) = flow {
         localDataSource.deleteTask(id)
-        remoteDataSource.deleteTask(id)
+        try {
+            val request = remoteDataSource.deleteTask(id)
+            emit(Resource.Success(request.message?.body.orEmpty()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e, e.message.toString()))
+        }
     }
 
     override fun getCategories(): Flow<Resource<List<CategoryEntity>>> = networkBoundResource(
@@ -92,16 +102,18 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getCategoryList()
         },
         saveFetchResult = { response ->
-            localDataSource.insertCategories(response.map { list -> list.data.map { it.toEntity() } }
-                .firstOrNull().orEmpty())
+            localDataSource.insertCategories(response.data.map { it.toEntity() })
         },
     )
 
-    override suspend fun createCategory(category: CategoryEntity) {
+    override fun createCategory(category: CategoryEntity) = flow {
         localDataSource.insertCategory(category)
-        remoteDataSource.createCategory(
-            CategoryParam(category.name)
-        )
+        try {
+            val request = remoteDataSource.createCategory(CategoryParam(category.name))
+            emit(Resource.Success(request.message?.body.orEmpty()))
+        } catch (e: Exception) {
+            emit(Resource.Error(e, e.message.toString()))
+        }
     }
 
     override fun getCategoryById(id: String): Flow<Resource<CategoryEntity>> = networkBoundResource(
@@ -112,7 +124,7 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getCategoryById(id.toIntOrNull().orDefault(0))
         },
         saveFetchResult = {
-            localDataSource.insertCategory(it.first().toEntity())
+            localDataSource.insertCategory(it.toEntity())
         }
     )
 }

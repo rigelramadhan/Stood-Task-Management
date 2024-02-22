@@ -1,6 +1,5 @@
 package one.reevdev.stood.core.data.datasource.remote.task
 
-import kotlinx.coroutines.flow.Flow
 import one.reevdev.stood.core.data.datasource.remote.ApiConfig
 import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryListResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
@@ -19,29 +18,29 @@ import retrofit2.http.Path
 interface TaskApiService {
 
     @POST("${ApiConfig.API_VERSION}/task")
-    fun createTask(@Body taskParam: TaskParam): Flow<BaseStoodResponse>
+    fun createTask(@Body taskParam: TaskParam): BaseStoodResponse
 
     @GET("${ApiConfig.API_VERSION}/task")
-    fun getTaskList(): Flow<TaskListResponse>
+    fun getTaskList(): TaskListResponse
 
     @GET("${ApiConfig.API_VERSION}/task/{id}")
-    fun getTaskById(@Path("id") id: String): Flow<TaskResponse>
+    fun getTaskById(@Path("id") id: String): TaskResponse
 
     @PUT("${ApiConfig.API_VERSION}/task/{id}")
     fun updateTask(
         @Path("id") id: String,
         @Body taskParam: TaskParam
-    ): Flow<BaseStoodResponse>
+    ): BaseStoodResponse
 
     @DELETE("${ApiConfig.API_VERSION}/task/{id}")
-    fun deleteTask(@Path("id") id: String): Flow<BaseStoodResponse>
+    fun deleteTask(@Path("id") id: String): BaseStoodResponse
 
     @POST("${ApiConfig.API_VERSION}/category")
-    fun createCategory(@Body categoryParam: CategoryParam): Flow<BaseStoodResponse>
+    fun createCategory(@Body categoryParam: CategoryParam): BaseStoodResponse
 
     @GET("${ApiConfig.API_VERSION}/category")
-    fun getCategoryList(): Flow<CategoryListResponse>
+    fun getCategoryList(): CategoryListResponse
 
     @GET("${ApiConfig.API_VERSION}/categoryById/{id}")
-    fun getCategoryById(@Path("id") id: Int): Flow<CategoryResponse>
+    fun getCategoryById(@Path("id") id: Int): CategoryResponse
 }
