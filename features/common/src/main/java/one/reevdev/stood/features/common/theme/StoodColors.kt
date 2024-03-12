@@ -39,6 +39,9 @@ data class StoodColors(
     // Text colors
     val textColor: Color,
     val textDisabled: Color,
+    // State colors
+    val primaryUnfocused: Color,
+    val primaryFocused: Color,
 )
 
 
@@ -74,6 +77,8 @@ val LocalLightStoodColors = staticCompositionLocalOf {
         sunset = lightSunset,
         textColor = lightTextColor,
         textDisabled = lightTextDisabled,
+        primaryUnfocused = lightPrimaryUnfocused,
+        primaryFocused = lightPrimaryFocused
     )
 }
 
@@ -109,5 +114,7 @@ val LocalDarkStoodColors = staticCompositionLocalOf {
         sunset = darkSunset,
         textColor = darkTextColor,
         textDisabled = darkTextDisabled,
+        primaryUnfocused = darkPrimaryUnfocused,
+        primaryFocused = darkPrimaryFocused
     )
 }
