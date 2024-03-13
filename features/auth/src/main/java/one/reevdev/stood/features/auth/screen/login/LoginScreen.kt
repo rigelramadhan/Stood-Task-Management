@@ -1,8 +1,8 @@
 package one.reevdev.stood.features.auth.screen.login
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +15,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -29,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
 import one.reevdev.stood.features.common.component.StoodButton
+import one.reevdev.stood.features.common.component.StoodButtonText
+import one.reevdev.stood.features.common.component.StoodText
 import one.reevdev.stood.features.common.component.StoodTextField
 import one.reevdev.stood.features.common.theme.StoodTheme
 
@@ -43,19 +44,22 @@ fun LoginScreen(
     onPasswordVisibilityClick: (Boolean) -> Unit,
     onLoginButtonClick: () -> Unit,
     onRegisterButtonClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .background(color = StoodTheme.colors.background)
             .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(16.dp),
     ) {
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        Spacer(modifier = Modifier.height(28.dp))
+        Switch(checked = true, onCheckedChange = {})
+        Spacer(modifier = Modifier.height(32.dp))
+        StoodText(
+            text = stringResource(R.string.title_login_screen),
+            style = StoodTheme.types.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(12.dp))
         StoodTextField(
             value = username,
             onValueChange = onUsernameChange,
@@ -70,6 +74,7 @@ fun LoginScreen(
             },
             imeAction = ImeAction.Next,
         )
+        Spacer(modifier = Modifier.height(20.dp))
         StoodTextField(
             value = password,
             onValueChange = onPasswordChange,
@@ -99,9 +104,11 @@ fun LoginScreen(
                 onLoginButtonClick()
             },
         )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
+        Spacer(modifier = Modifier.height(16.dp))
+        StoodButtonText(text = stringResource(R.string.label_forgot_password)) {
+            onForgotPasswordClick()
+        }
+        Spacer(modifier = Modifier.height(24.dp))
         StoodButton(
             onClick = {
                 onLoginButtonClick()
@@ -110,20 +117,14 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
-            Text(text = stringResource(R.string.action_login))
+            StoodText(text = stringResource(R.string.action_login))
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        StoodButton(
-            onClick = {
+        Row {
+            StoodText(text = stringResource(R.string.label_dont_have_any_account))
+            StoodButtonText(text = stringResource(R.string.label_register_here)) {
                 onRegisterButtonClick()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(text = stringResource(R.string.action_register))
+            }
         }
     }
 }
@@ -141,6 +142,7 @@ fun LoginScreenPreview() {
             onPasswordVisibilityClick = {},
             onLoginButtonClick = {},
             onRegisterButtonClick = {},
+            onForgotPasswordClick = {},
         )
     }
 }

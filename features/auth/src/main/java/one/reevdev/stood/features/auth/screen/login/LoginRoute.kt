@@ -45,5 +45,6 @@ fun LoginRoute(
             viewModel.login(loginParams)
         },
         onRegisterButtonClick = onRegisterButtonClick,
+        onForgotPasswordClick = {}
     )
 }
