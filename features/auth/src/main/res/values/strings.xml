@@ -8,4 +8,11 @@
     <string name="label_display_name">Display Name</string>
     <string name="label_confirm_password">Confirm Password</string>
     <string name="already_have_an_account">Already have an account? Login here</string>
+    <string name="title_login_screen">Login to Stood</string>
+    <string name="label_forgot_password">Forgot password?</string>
+    <string name="label_dont_have_any_account">"Don't have any account? "</string>
+    <string name="label_register_here">Register here</string>
+    <string name="title_create_an_account">Create an account</string>
+    <string name="label_terms_of_service">Terms of Service</string>
+    <string name="label_privacy_policy">Privacy Policy</string>
 </resources>
