@@ -13,10 +13,8 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
+import one.reevdev.stood.features.common.component.StoodButton
 import one.reevdev.stood.features.common.component.StoodTextField
 import one.reevdev.stood.features.common.theme.StoodTheme
 
@@ -103,7 +102,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Button(
+        StoodButton(
             onClick = {
                 onLoginButtonClick()
             },
@@ -116,7 +115,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedButton(
+        StoodButton(
             onClick = {
                 onRegisterButtonClick()
             },
