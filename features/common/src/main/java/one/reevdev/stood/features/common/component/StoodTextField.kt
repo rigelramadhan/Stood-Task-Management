@@ -5,7 +5,6 @@ import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,8 +42,8 @@ fun StoodTextField(
         value = value,
         onValueChange = onValueChange,
         enabled = enabled,
-        label = { Text(text = label) },
-        placeholder = placeholder?.let { { Text(text = it) } },
+        label = { StoodText(text = label) },
+        placeholder = placeholder?.let { { StoodText(text = it) } },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
             imeAction = imeAction,
