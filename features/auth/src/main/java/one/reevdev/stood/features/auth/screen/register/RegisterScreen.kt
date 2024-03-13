@@ -1,40 +1,43 @@
 package one.reevdev.stood.features.auth.screen.register
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
+import one.reevdev.stood.features.common.R.font
+import one.reevdev.stood.features.common.component.StoodButton
+import one.reevdev.stood.features.common.component.StoodButtonText
+import one.reevdev.stood.features.common.component.StoodText
+import one.reevdev.stood.features.common.component.StoodTextField
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable
@@ -55,87 +58,59 @@ fun RegisterScreen(
     onRegisterButtonClick: () -> Unit,
     onLoginButtonClick: () -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(16.dp)
+            .background(color = StoodTheme.colors.background),
     ) {
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(R.string.label_username)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null
-                )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
-            ),
-            shape = RoundedCornerShape(16.dp)
+        Spacer(modifier = Modifier.height(28.dp))
+        Switch(checked = true, onCheckedChange = {})
+        Spacer(modifier = Modifier.height(32.dp))
+        TermsAndCondition(
+            onTosClick = {},
+            onPrivacyPolicyClick = {}
         )
-
-        OutlinedTextField(
+        Spacer(modifier = Modifier.height(16.dp))
+        StoodText(
+            text = stringResource(R.string.title_create_an_account),
+            style = StoodTheme.types.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        StoodTextField(
             value = email,
             onValueChange = onEmailChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(id = R.string.label_email)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = null
-                )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
-            ),
-            shape = RoundedCornerShape(16.dp)
+                .padding(bottom = 12.dp),
+            label = stringResource(id = R.string.label_email),
+            imeAction = ImeAction.Next,
         )
-
-        OutlinedTextField(
+        StoodTextField(
+            value = username,
+            onValueChange = onUsernameChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 12.dp),
+            label = stringResource(R.string.label_username),
+            imeAction = ImeAction.Next,
+        )
+        StoodTextField(
             value = displayName,
             onValueChange = onDisplayNameChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(id = R.string.label_display_name)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = null
-                )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
-            ),
-            shape = RoundedCornerShape(16.dp)
+                .padding(bottom = 12.dp),
+            label = stringResource(id = R.string.label_display_name),
+            imeAction = ImeAction.Next,
         )
-
-        OutlinedTextField(
+        StoodTextField(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(R.string.label_password)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = null
-                )
-            },
+                .padding(bottom = 12.dp),
+            label = stringResource(R.string.label_password),
             trailingIcon = {
                 val icon =
                     if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
@@ -147,61 +122,89 @@ fun RegisterScreen(
                 }
             },
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Password
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    // Move focus to the next field
-                }
-            ),
-            shape = RoundedCornerShape(16.dp)
+            imeAction = ImeAction.Next,
+            keyboardType = KeyboardType.Password,
+            onNext = {
+                // Move focus to the next field
+            },
         )
-
-        OutlinedTextField(
+        StoodTextField(
             value = confirmPassword,
             onValueChange = onConfirmPasswordChange,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(id = R.string.label_confirm_password)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = null
-                )
-            },
+                .fillMaxWidth(),
+            label = stringResource(id = R.string.label_confirm_password),
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Password
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    onRegisterButtonClick()
-                }
-            ),
-            shape = RoundedCornerShape(16.dp)
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Password,
+            onDone = {
+                onRegisterButtonClick()
+            },
         )
-
         Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
+        StoodButton(
             onClick = {
                 onRegisterButtonClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(text = stringResource(R.string.action_register))
-        }
-
+                .height(50.dp),
+            text = stringResource(R.string.action_register)
+        )
         Spacer(modifier = Modifier.height(16.dp))
+        Row {
+            StoodText(text = "Already have an account? ")
+            StoodButtonText(text = "Login") {
+                onLoginButtonClick()
+            }
+        }
+    }
+}
 
-        TextButton(onClick = onLoginButtonClick) {
-            Text(text = stringResource(R.string.already_have_an_account))
+@Composable
+fun TermsAndCondition(
+    modifier: Modifier = Modifier,
+    onTosClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit
+) {
+    val termsOfService = stringResource(R.string.label_terms_of_service)
+    val privacyPolicy = stringResource(R.string.label_privacy_policy)
+    val buttonTextColor = StoodTheme.colors.tertiary
+    val annotatedString = buildAnnotatedString {
+        withStyle(
+            style = ParagraphStyle(
+                lineHeight = 16.sp
+            )
+        ) {
+            withStyle(
+                style = SpanStyle(
+                    fontFamily = FontFamily(Font(font.josefin_sans_regular)),
+                    fontSize = 12.sp,
+                )
+            ) {
+                append("By opting to use this app, you're acknowledging your agreement with our ")
+                withStyle(style = SpanStyle(color = buttonTextColor)) {
+                    pushStringAnnotation(termsOfService, termsOfService)
+                    append(termsOfService)
+                }
+                append(" and ")
+                withStyle(style = SpanStyle(color = buttonTextColor)) {
+                    pushStringAnnotation(privacyPolicy, privacyPolicy)
+                    append(privacyPolicy)
+                }
+                append(".")
+            }
+        }
+    }
+    ClickableText(
+        modifier = modifier,
+        text = annotatedString,
+    ) {
+        annotatedString.getStringAnnotations(it, it).firstOrNull()?.let { span ->
+            when (span.item) {
+                termsOfService -> onTosClick()
+                privacyPolicy -> onPrivacyPolicyClick()
+            }
         }
     }
 }

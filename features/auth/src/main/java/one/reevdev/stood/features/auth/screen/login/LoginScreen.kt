@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -66,12 +64,12 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             label = stringResource(R.string.label_username),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = null
-                )
-            },
+//            leadingIcon = {
+//                Icon(
+//                    imageVector = Icons.Default.Person,
+//                    contentDescription = null
+//                )
+//            },
             imeAction = ImeAction.Next,
         )
         Spacer(modifier = Modifier.height(20.dp))
@@ -81,12 +79,12 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             label = stringResource(R.string.label_password),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = null
-                )
-            },
+//            leadingIcon = {
+//                Icon(
+//                    imageVector = Icons.Default.Lock,
+//                    contentDescription = null
+//                )
+//            },
             trailingIcon = {
                 val icon =
                     if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
@@ -115,10 +113,9 @@ fun LoginScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            StoodText(text = stringResource(R.string.action_login))
-        }
+                .height(50.dp),
+            text = stringResource(R.string.action_login)
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             StoodText(text = stringResource(R.string.label_dont_have_any_account))

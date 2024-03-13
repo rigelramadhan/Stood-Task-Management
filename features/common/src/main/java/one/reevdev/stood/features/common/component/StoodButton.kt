@@ -1,6 +1,5 @@
 package one.reevdev.stood.features.common.component
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -12,7 +11,7 @@ fun StoodButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    content: @Composable RowScope.() -> Unit
+    text: String,
 ) {
     Button(
         modifier = modifier,
@@ -22,6 +21,10 @@ fun StoodButton(
             containerColor = StoodTheme.colors.primary,
             contentColor = StoodTheme.colors.onPrimary
         ),
-        content = content
-    )
+    ) {
+        StoodText(
+            text = text,
+            color = StoodTheme.colors.onPrimary
+        )
+    }
 }

@@ -10,14 +10,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import one.reevdev.cosmoe.utils.orDefault
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable
 fun StoodText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color? = null,
+    color: Color = StoodTheme.colors.textColor,
     fontWeight: FontWeight? = null,
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
@@ -31,7 +30,7 @@ fun StoodText(
     Text(
         text = text,
         modifier = modifier,
-        color = color.orDefault(Color.Unspecified),
+        color = color,
         fontWeight = fontWeight,
         textDecoration = textDecoration,
         textAlign = textAlign,
