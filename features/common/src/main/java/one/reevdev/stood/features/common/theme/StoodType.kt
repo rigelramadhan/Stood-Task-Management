@@ -14,13 +14,13 @@ private val FONT_MEDIUM = FontFamily(Font(R.font.josefin_sans_medium))
 val defaultLightTextStyle
     get() = TextStyle(
         fontFamily = FONT_REGULAR,
-        color = lightTextColor,
+//        color = lightTextColor,
     )
 
 val defaultDarkTextStyle
     get() = TextStyle(
         fontFamily = FONT_MEDIUM,
-        color = darkTextColor,
+//        color = darkTextColor,
     )
 
 @Immutable
