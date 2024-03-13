@@ -1,5 +1,6 @@
 package one.reevdev.stood.features.auth.screen.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -19,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
+import one.reevdev.stood.features.common.component.StoodTextField
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable
@@ -50,6 +48,7 @@ fun LoginScreen(
 
     Column(
         modifier = modifier
+            .background(color = StoodTheme.colors.background)
             .fillMaxSize()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,32 +57,26 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(
+        StoodTextField(
             value = username,
             onValueChange = onUsernameChange,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(R.string.label_username)) },
+                .fillMaxWidth(),
+            label = stringResource(R.string.label_username),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null
                 )
             },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Next
-            ),
-            shape = RoundedCornerShape(16.dp)
+            imeAction = ImeAction.Next,
         )
-
-        OutlinedTextField(
+        StoodTextField(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text(text = stringResource(R.string.label_password)) },
+                .fillMaxWidth(),
+            label = stringResource(R.string.label_password),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -101,16 +94,11 @@ fun LoginScreen(
                 }
             },
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Password
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    onLoginButtonClick()
-                }
-            ),
-            shape = RoundedCornerShape(16.dp)
+            imeAction = ImeAction.Done,
+            keyboardType = KeyboardType.Password,
+            onDone = {
+                onLoginButtonClick()
+            },
         )
 
         Spacer(modifier = Modifier.height(32.dp))
