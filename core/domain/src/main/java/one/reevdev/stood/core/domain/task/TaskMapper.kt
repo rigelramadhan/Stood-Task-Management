@@ -6,6 +6,7 @@ import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
+import one.reevdev.stood.core.domain.task.model.TaskPeriodic
 import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.core.domain.task.model.TaskTime
@@ -19,18 +20,20 @@ const val DATE_FORMAT = "dd MMMM yyyy"
 fun TaskWithCategory.toDomain(): Task = Task(
     id = task.id,
     title = task.title,
-    priority = TaskPriority.values().first { it.priorityLevel == task.priority },
+    priority = TaskPriority.entries.first { it.priorityLevel == task.priority },
     time = task.time.toTaskTime(),
     category = category.toDomain(),
-    status = TaskStatus.values().first { it.key == task.status }
+    status = TaskStatus.entries.first { it.key == task.status },
+    periodic = TaskPeriodic.entries.first { it.type == task.periodic },
 )
 
 fun TaskEntityParams.toDomain() = TaskParams(
     title = title,
-    priority = TaskPriority.values().first { it.priorityLevel == this.priority },
+    priority = TaskPriority.entries.first { it.priorityLevel == this.priority },
     time = time.toTaskTime(),
     categoryId = categoryId,
-    status = TaskStatus.values().first { it.key == status }
+    status = TaskStatus.entries.first { it.key == status },
+    periodic = TaskPeriodic.entries.first { it.type == periodic },
 )
 
 fun TaskParams.toEntity() = TaskEntityParams(
@@ -38,7 +41,8 @@ fun TaskParams.toEntity() = TaskEntityParams(
     priority = priority.priorityLevel,
     time = time.fullISOFormat,
     categoryId = categoryId,
-    status = status.key
+    status = status.key,
+    periodic = periodic.type
 )
 
 fun TaskUiParams.toDomain() = TaskParams(
@@ -46,7 +50,8 @@ fun TaskUiParams.toDomain() = TaskParams(
     priority = priority,
     time = TaskTime(mapToApiString(time, date), time, date),
     categoryId = category.id,
-    status = status
+    status = status,
+    periodic = periodic
 )
 
 fun CategoryEntity.toDomain(): Category = Category(

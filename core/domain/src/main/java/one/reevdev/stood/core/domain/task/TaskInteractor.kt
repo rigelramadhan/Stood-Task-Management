@@ -1,7 +1,8 @@
 package one.reevdev.stood.core.domain.task
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import one.reevdev.cosmoe.utils.resource.Resource
+import one.reevdev.cosmoe.utils.resource.mapFlowData
 import one.reevdev.stood.core.data.repository.task.ITaskRepository
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
@@ -12,42 +13,47 @@ import javax.inject.Inject
 class TaskInteractor @Inject constructor(
     private val taskRepository: ITaskRepository
 ) : TaskUseCase {
-    override fun getTasks(): Flow<Result<List<Task>>> {
-        taskRepository.getTasks().map {
-
+    override fun getTasks(): Flow<Resource<List<Task>>> {
+        return taskRepository.getTasks().mapFlowData { data ->
+            data.map { it.toDomain() }
         }
     }
 
-    override fun getTaskById(id: String): Flow<Result<Task>> {
-        TODO("Not yet implemented")
+    override fun getTaskById(id: String): Flow<Resource<Task>> {
+        return taskRepository.getTaskById(id).mapFlowData {
+            it.toDomain()
+        }
     }
 
-    override fun getTaskByStatus(status: TaskStatus): Flow<Result<List<Task>>> {
-        TODO("Not yet implemented")
+    override fun getTaskByStatus(status: TaskStatus): Flow<Resource<List<Task>>> {
+        return taskRepository.getTaskByStatus(status.key).mapFlowData { data ->
+            data.map { it.toDomain() }
+        }
     }
 
-    override fun createTask(taskParams: TaskParams): Flow<Result<String>> {
-        TODO("Not yet implemented")
+    override fun createTask(taskParams: TaskParams): Flow<Resource<String>> {
+        return taskRepository.createTask(taskParams.toEntity())
     }
 
-    override fun updateTask(id: String, taskParams: TaskParams): Flow<Result<String>> {
-        TODO("Not yet implemented")
+    override fun updateTask(id: String, taskParams: TaskParams): Flow<Resource<String>> {
+        return taskRepository.updateTask(id, taskParams.toEntity())
     }
 
-    override fun deleteTask(id: String): Flow<Result<String>> {
-        TODO("Not yet implemented")
+    override fun deleteTask(id: String): Flow<Resource<String>> {
+        return taskRepository.deleteTask(id)
     }
 
-    override fun getCategories(): Flow<Result<List<Category>>> {
-        TODO("Not yet implemented")
+    override fun getCategories(): Flow<Resource<List<Category>>> {
+        return taskRepository.getCategories().mapFlowData { data ->
+            data.map { it.toDomain() }
+        }
     }
 
-    override suspend fun createCategory(category: Category): Flow<Result<String>> {
-        TODO("Not yet implemented")
+    override suspend fun createCategory(category: Category): Flow<Resource<String>> {
+        return taskRepository.createCategory(category.toEntity())
     }
 
-    override fun getCategoryById(id: String): Flow<Result<Category>> {
-        TODO("Not yet implemented")
+    override fun getCategoryById(id: String): Flow<Resource<Category>> {
+        return taskRepository.getCategoryById(id).mapFlowData { it.toDomain() }
     }
-
 }
