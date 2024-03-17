@@ -31,4 +31,8 @@ class AuthRepository @Inject constructor(
     override fun logout(): Flow<Boolean> = flow {
         authDataStore.deleteToken()
     }
+
+    override fun getToken(): Flow<String> {
+        return authDataStore.getToken()
+    }
 }

@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import one.reevdev.cosmoe.utils.emptyString
+import one.reevdev.stood.core.data.utils.constants.DataStoreConstants
 import one.reevdev.stood.core.data.utils.decrypt
 import one.reevdev.stood.core.data.utils.emptyByteArray
 import one.reevdev.stood.core.data.utils.encrypt
@@ -24,7 +25,7 @@ class AuthDataStore @Inject constructor(
 ) {
     private val dataStore = context.authDataStore
     private var encryptedToken = emptyByteArray()
-    private val keyToken = stringPreferencesKey(KEY_TOKEN)
+    private val keyToken = stringPreferencesKey(DataStoreConstants.TOKEN_KEY)
 
     suspend fun saveToken(token: String) {
         encryptedToken = token.encrypt()
@@ -50,9 +51,5 @@ class AuthDataStore @Inject constructor(
 
     fun getTokenImmediately(): String {
         return encryptedToken.decrypt()
-    }
-
-    companion object {
-        private const val KEY_TOKEN = "key_token"
     }
 }
