@@ -11,4 +11,8 @@ interface AuthUseCase {
     fun login(loginParams: LoginParams): Flow<LoginResult>
 
     fun register(registerParams: RegisterParams): Flow<RegisterResult>
+
+    fun logout(): Flow<Boolean>
+
+    fun getToken(): Flow<String>
 }

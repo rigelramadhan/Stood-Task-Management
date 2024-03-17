@@ -1,4 +1,4 @@
-package one.reevdev.stood
+package one.reevdev.stood.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.cosmoe.ui.compose.UiState
+import one.reevdev.cosmoe.utils.Logger
 import one.reevdev.stood.core.domain.auth.AuthUseCase
 import one.reevdev.stood.core.domain.auth.params.LoginParams
 import javax.inject.Inject
@@ -63,4 +64,10 @@ data class LoginUiState(
     override val isLoading: Boolean = false,
     override val errorMessage: String? = null,
     val isLoginSuccess: Boolean = false,
-) : UiState
+) : UiState {
+    init {
+        if (!errorMessage.isNullOrBlank()) {
+            Logger.error { errorMessage }
+        }
+    }
+}

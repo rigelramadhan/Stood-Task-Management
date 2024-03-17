@@ -61,8 +61,8 @@ fun RegisterScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .background(color = StoodTheme.colors.background),
+            .background(color = StoodTheme.colors.background)
+            .padding(16.dp),
     ) {
         Spacer(modifier = Modifier.height(28.dp))
         Switch(checked = true, onCheckedChange = {})
@@ -170,6 +170,7 @@ fun TermsAndCondition(
     val termsOfService = stringResource(R.string.label_terms_of_service)
     val privacyPolicy = stringResource(R.string.label_privacy_policy)
     val buttonTextColor = StoodTheme.colors.tertiary
+    val textColor = StoodTheme.colors.textColor
     val annotatedString = buildAnnotatedString {
         withStyle(
             style = ParagraphStyle(
@@ -180,6 +181,7 @@ fun TermsAndCondition(
                 style = SpanStyle(
                     fontFamily = FontFamily(Font(font.josefin_sans_regular)),
                     fontSize = 12.sp,
+                    color = textColor
                 )
             ) {
                 append("By opting to use this app, you're acknowledging your agreement with our ")
