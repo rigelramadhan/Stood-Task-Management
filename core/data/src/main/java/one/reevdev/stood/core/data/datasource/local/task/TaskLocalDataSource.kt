@@ -27,7 +27,8 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
                     priority = priority,
                     time = time,
                     categoryId = categoryId,
-                    status = status
+                    status = status,
+                    periodic = periodic,
                 )
             )
         }
@@ -50,7 +51,8 @@ class TaskLocalDataSource @Inject constructor(private val taskDao: TaskDao) {
                     priority = priority,
                     time = time,
                     categoryId = categoryId,
-                    status = status
+                    status = status,
+                    periodic = periodic,
                 )
             )
         }
