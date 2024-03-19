@@ -14,7 +14,7 @@ class AuthInterceptor @Inject constructor(
         var request = chain.request()
         val token = dataStore.getTokenImmediately()
         request = request.newBuilder()
-            .addHeader("Authorization", "Bearer $token")
+            .addHeader("Authorization", token)
             .build()
         return chain.proceed(request)
     }

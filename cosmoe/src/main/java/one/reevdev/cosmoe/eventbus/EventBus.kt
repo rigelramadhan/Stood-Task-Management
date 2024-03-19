@@ -4,7 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 object EventBus {
@@ -22,16 +23,14 @@ object EventBus {
     }
 
     inline fun <reified T : BaseEvent> subscribe(
-        scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
+        scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
         tag: String,
         crossinline action: (T) -> Unit,
     ) {
-        scope.launch {
-            bus.collectLatest {
-                if (tag == it.first && it.second is T) {
-                    action(it.second as T)
-                }
+        bus.onEach {
+            if (tag == it.first && it.second is T) {
+                action(it.second as T)
             }
-        }
+        }.launchIn(scope)
     }
 }

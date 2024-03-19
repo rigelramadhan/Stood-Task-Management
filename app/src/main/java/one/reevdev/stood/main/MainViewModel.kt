@@ -5,30 +5,28 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import one.reevdev.cosmoe.utils.Logger
-import one.reevdev.cosmoe.utils.emptyString
-import one.reevdev.stood.core.domain.auth.AuthUseCase
+import one.reevdev.cosmoe.eventbus.EventBus
+import one.reevdev.cosmoe.eventbus.EventConstants
+import one.reevdev.cosmoe.eventbus.event.NameEvent
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val authUseCase: AuthUseCase) : ViewModel() {
+class MainViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiState = MutableStateFlow(emptyString())
-    val uiState: StateFlow<String> by lazy { _uiState }
+    private val _isUnauthorized = MutableStateFlow(false)
+    val isUnauthorized: StateFlow<Boolean> by lazy { _isUnauthorized }
 
     fun checkToken() {
-        viewModelScope.launch {
-            authUseCase.getToken()
-                .catch {
-                    Logger.error(it)
-                    _uiState.update { emptyString() }
+        EventBus.subscribe<NameEvent>(
+            tag = EventConstants.TAG_AUTH,
+            scope = viewModelScope,
+        ) {
+            if (it.name == EventConstants.EVENT_UNAUTHORIZED) {
+                _isUnauthorized.update {
+                    true
                 }
-                .collect { token ->
-                    _uiState.update { token }
-                }
+            }
         }
     }
 }

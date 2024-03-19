@@ -40,6 +40,7 @@ class TaskViewModel @Inject constructor(
                     if (error is IOException) {
                         onUnauthorized?.invoke()
                     } else {
+                        Logger.error(error)
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
@@ -99,8 +100,9 @@ class TaskViewModel @Inject constructor(
 
         viewModelScope.launch {
             taskUseCase.updateTask(task.id, taskParam)
-                .catch {
+                .catch { throwable ->
                     _uiState.update {
+                        Logger.error(throwable)
                         it.copy(
                             isLoading = false,
                             errorMessage = "Something went wrong.", // Todo: To be replaced by API message
