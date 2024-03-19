@@ -1,25 +1,42 @@
 package one.reevdev.stood.core.data.datasource.remote.task
 
+import kotlinx.coroutines.flow.flow
 import one.reevdev.stood.core.data.datasource.remote.task.param.CategoryParam
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 import javax.inject.Inject
 
 class TaskRemoteDataSource @Inject constructor(
     private val apiService: TaskApiService
-) : TaskApiService {
-    override fun createTask(taskParam: TaskParam) = apiService.createTask(taskParam)
+) {
+    fun createTask(taskParam: TaskParam) = flow {
+        emit(apiService.createTask(taskParam))
+    }
 
-    override fun getTaskList() = apiService.getTaskList()
+    fun getTaskList() = flow {
+        emit(apiService.getTaskList())
+    }
 
-    override fun getTaskById(id: String) = apiService.getTaskById(id)
+    fun getTaskById(id: String) = flow {
+        emit(apiService.getTaskById(id))
+    }
 
-    override fun updateTask(id: String, taskParam: TaskParam) = apiService.updateTask(id, taskParam)
+    fun updateTask(id: String, taskParam: TaskParam) = flow {
+        emit(apiService.updateTask(id, taskParam))
+    }
 
-    override fun deleteTask(id: String) = apiService.deleteTask(id)
+    fun deleteTask(id: String) = flow {
+        emit(apiService.deleteTask(id))
+    }
 
-    override fun createCategory(categoryParam: CategoryParam) = apiService.createCategory(categoryParam)
+    fun createCategory(categoryParam: CategoryParam) = flow {
+        emit(apiService.createCategory(categoryParam))
+    }
 
-    override fun getCategoryList() = apiService.getCategoryList()
+    fun getCategoryList() = flow {
+        emit(apiService.getCategoryList())
+    }
 
-    override fun getCategoryById(id: Int) = apiService.getCategoryById(id)
+    fun getCategoryById(id: Int) = flow {
+        emit(apiService.getCategoryById(id))
+    }
 }

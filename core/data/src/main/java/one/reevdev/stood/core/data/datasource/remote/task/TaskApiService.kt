@@ -18,29 +18,29 @@ import retrofit2.http.Path
 interface TaskApiService {
 
     @POST("${ApiConfig.API_VERSION}/task")
-    fun createTask(@Body taskParam: TaskParam): BaseStoodResponse
+    suspend fun createTask(@Body taskParam: TaskParam): BaseStoodResponse
 
     @GET("${ApiConfig.API_VERSION}/task")
-    fun getTaskList(): TaskListResponse
+    suspend fun getTaskList(): TaskListResponse
 
     @GET("${ApiConfig.API_VERSION}/task/{id}")
-    fun getTaskById(@Path("id") id: String): TaskResponse
+    suspend fun getTaskById(@Path("id") id: String): TaskResponse
 
     @PUT("${ApiConfig.API_VERSION}/task/{id}")
-    fun updateTask(
+    suspend fun updateTask(
         @Path("id") id: String,
         @Body taskParam: TaskParam
     ): BaseStoodResponse
 
     @DELETE("${ApiConfig.API_VERSION}/task/{id}")
-    fun deleteTask(@Path("id") id: String): BaseStoodResponse
+    suspend fun deleteTask(@Path("id") id: String): BaseStoodResponse
 
     @POST("${ApiConfig.API_VERSION}/category")
-    fun createCategory(@Body categoryParam: CategoryParam): BaseStoodResponse
+    suspend fun createCategory(@Body categoryParam: CategoryParam): BaseStoodResponse
 
     @GET("${ApiConfig.API_VERSION}/category")
-    fun getCategoryList(): CategoryListResponse
+    suspend fun getCategoryList(): CategoryListResponse
 
     @GET("${ApiConfig.API_VERSION}/categoryById/{id}")
-    fun getCategoryById(@Path("id") id: Int): CategoryResponse
+    suspend fun getCategoryById(@Path("id") id: Int): CategoryResponse
 }
