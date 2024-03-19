@@ -90,8 +90,4 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging.jvm)
-
-    // Chuck
-    debugImplementation(libs.chucker.debug)
-    releaseImplementation(libs.chucker.release)
 }
