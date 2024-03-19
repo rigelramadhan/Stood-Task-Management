@@ -5,5 +5,6 @@ data class TaskParams(
     val priority: TaskPriority,
     val time: TaskTime,
     val categoryId: String,
-    val status: TaskStatus
+    val status: TaskStatus,
+    val periodic: TaskPeriodic,
 )

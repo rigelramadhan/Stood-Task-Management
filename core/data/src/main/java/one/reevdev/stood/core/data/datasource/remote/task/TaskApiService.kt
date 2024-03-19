@@ -1,9 +1,11 @@
 package one.reevdev.stood.core.data.datasource.remote.task
 
-import kotlinx.coroutines.flow.Flow
 import one.reevdev.stood.core.data.datasource.remote.ApiConfig
+import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryListResponse
+import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskListResponse
 import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
+import one.reevdev.stood.core.data.datasource.remote.task.param.CategoryParam
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 import retrofit2.http.Body
@@ -16,20 +18,29 @@ import retrofit2.http.Path
 interface TaskApiService {
 
     @POST("${ApiConfig.API_VERSION}/task")
-    fun createTask(@Body taskParam: TaskParam): Flow<BaseStoodResponse>
+    suspend fun createTask(@Body taskParam: TaskParam): BaseStoodResponse
 
     @GET("${ApiConfig.API_VERSION}/task")
-    fun getTaskList(): Flow<TaskListResponse>
+    suspend fun getTaskList(): TaskListResponse
 
     @GET("${ApiConfig.API_VERSION}/task/{id}")
-    fun getTaskById(@Path("id") id: String): Flow<TaskResponse>
+    suspend fun getTaskById(@Path("id") id: String): TaskResponse
 
     @PUT("${ApiConfig.API_VERSION}/task/{id}")
-    fun updateTask(
+    suspend fun updateTask(
         @Path("id") id: String,
         @Body taskParam: TaskParam
-    ): Flow<BaseStoodResponse>
+    ): BaseStoodResponse
 
     @DELETE("${ApiConfig.API_VERSION}/task/{id}")
-    fun deleteTask(@Path("id") id: String): Flow<BaseStoodResponse>
+    suspend fun deleteTask(@Path("id") id: String): BaseStoodResponse
+
+    @POST("${ApiConfig.API_VERSION}/category")
+    suspend fun createCategory(@Body categoryParam: CategoryParam): BaseStoodResponse
+
+    @GET("${ApiConfig.API_VERSION}/category")
+    suspend fun getCategoryList(): CategoryListResponse
+
+    @GET("${ApiConfig.API_VERSION}/categoryById/{id}")
+    suspend fun getCategoryById(@Path("id") id: Int): CategoryResponse
 }

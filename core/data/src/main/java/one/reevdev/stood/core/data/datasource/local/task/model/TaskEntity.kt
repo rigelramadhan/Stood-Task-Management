@@ -21,6 +21,8 @@ data class TaskEntity(
     val categoryId: String,
     @ColumnInfo("status")
     val status: String,
+    @ColumnInfo("periodic")
+    val periodic: String,
 )
 
 data class TaskWithCategory(

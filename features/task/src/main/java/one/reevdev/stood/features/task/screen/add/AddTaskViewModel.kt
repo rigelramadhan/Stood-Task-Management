@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.cosmoe.ui.compose.UiState
+import one.reevdev.cosmoe.utils.Logger
+import one.reevdev.cosmoe.utils.resource.handleResource
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.params.TaskUiParams
@@ -37,12 +39,28 @@ class AddTaskViewModel @Inject constructor(
                         )
                     }
                 }
-                .collect { categories ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = null,
-                            categories = categories
+                .collect { data ->
+                    _uiState.update { uiState ->
+                        data.handleResource(
+                            onSuccess = { categories ->
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    categories = categories
+                                )
+                            },
+                            onFailure = { throwable, message ->
+                                Logger.error(throwable)
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = message,
+                                )
+                            },
+                            onLoading = {
+                                uiState.copy(
+                                    isLoading = true,
+                                )
+                            }
                         )
                     }
                 }
