@@ -1,5 +1,7 @@
 package one.reevdev.stood.core.domain.task
 
+import one.reevdev.cosmoe.utils.orDefault
+import one.reevdev.stood.core.data.datasource.local.task.helper.InitialDataSource
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
@@ -22,7 +24,7 @@ fun TaskWithCategory.toDomain(): Task = Task(
     title = task.title,
     priority = TaskPriority.entries.first { it.priorityLevel == task.priority },
     time = task.time.toTaskTime(),
-    category = category.toDomain(),
+    category = category?.toDomain().orDefault(InitialDataSource.getCategories().first().toDomain()),
     status = TaskStatus.entries.first { it.key == task.status },
     periodic = TaskPeriodic.entries.first { it.type == task.periodic },
 )
