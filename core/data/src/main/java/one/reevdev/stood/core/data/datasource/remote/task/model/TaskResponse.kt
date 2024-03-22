@@ -5,6 +5,12 @@ import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 
 data class TaskResponse(
 
+    @field:SerializedName("data")
+    val data: TaskItem
+) : BaseStoodResponse()
+
+data class TaskItem(
+
     @field:SerializedName("updatedBy")
     val updatedBy: String? = null,
 
@@ -43,4 +49,4 @@ data class TaskResponse(
 
     @field:SerializedName("updatedAt")
     val updatedAt: String? = null
-) : BaseStoodResponse()
+)

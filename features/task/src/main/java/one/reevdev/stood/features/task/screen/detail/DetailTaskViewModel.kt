@@ -6,10 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.cosmoe.ui.compose.UiState
 import one.reevdev.cosmoe.utils.Logger
+import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.cosmoe.utils.resource.handleResource
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Category
@@ -26,83 +28,54 @@ class DetailTaskViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DetailUiState(false))
     val uiState: StateFlow<DetailUiState> by lazy { _uiState }
 
-    fun init() {
+    fun getInitialData(taskId: String) {
         _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            taskUseCase.getCategories()
-                .catch {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                            isTaskSaved = false
-                        )
-                    }
-                }
-                .collect { data ->
-                    _uiState.update { uiState ->
-                        data.handleResource(
-                            onSuccess = { categories ->
-                                uiState.copy(
-                                    isLoading = false,
-                                    errorMessage = null,
-                                    categories = categories
-                                )
-                            },
-                            onFailure = { throwable, message ->
-                                Logger.error(throwable)
-                                uiState.copy(
-                                    isLoading = false,
-                                    errorMessage = message,
-                                )
-                            },
-                            onLoading = {
-                                uiState.copy(
-                                    isLoading = true,
-                                )
-                            }
-                        )
-                    }
-                }
-        }
-    }
+            val getTaskByIdFlow = taskUseCase.getTaskById(taskId)
+            val getCategoriesFlow = taskUseCase.getCategories()
 
-    fun getTaskById(id: String) {
-        _uiState.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            taskUseCase.getTaskById(id)
-                .catch {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                        )
-                    }
+            getTaskByIdFlow.combine(getCategoriesFlow) { task, categories ->
+                Pair(task, categories)
+            }.catch {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                    )
                 }
+            }
                 .collect { data ->
+                    val task = data.first.handleResource(
+                        onSuccess = { task ->
+                            Triple(task, emptyString(), false)
+                        },
+                        onFailure = { throwable, message ->
+                            Triple(null, message.orEmpty(), false)
+                        },
+                        onLoading = {
+                            Triple(it, emptyString(), true)
+                        }
+                    )
+
+                    val categories = data.second.handleResource(
+                        onSuccess = { categories ->
+                            Triple(categories, emptyString(), false)
+                        },
+                        onFailure = { throwable, message ->
+                            Triple(emptyList(), message.orEmpty(), true)
+                        },
+                        onLoading = {
+                            Triple(it.orEmpty(), emptyString(), false)
+                        }
+                    )
+
                     _uiState.update { uiState ->
-                        data.handleResource(
-                            onSuccess = { task ->
-                                uiState.copy(
-                                    isLoading = false,
-                                    errorMessage = null,
-                                    task = task
-                                )
-                            },
-                            onFailure = { throwable, message ->
-                                Logger.error(throwable)
-                                uiState.copy(
-                                    isLoading = false,
-                                    errorMessage = message,
-                                )
-                            },
-                            onLoading = {
-                                uiState.copy(
-                                    isLoading = true,
-                                )
-                            }
+                        uiState.copy(
+                            isLoading = task.third || categories.third,
+                            errorMessage = task.second.ifEmpty { categories.second.ifEmpty { null } },
+                            task = task.first,
+                            categories = categories.first
                         )
                     }
                 }
@@ -113,24 +86,26 @@ class DetailTaskViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            try {
-                taskUseCase.deleteTask(id)
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = null,
-                        isTaskDeleted = true,
-                    )
+            taskUseCase.deleteTask(id)
+                .catch {
+                    Logger.error(it)
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                            isTaskDeleted = false,
+                        )
+                    }
                 }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                        isTaskDeleted = false,
-                    )
+                .collect {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = null,
+                            isTaskDeleted = true,
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -138,25 +113,27 @@ class DetailTaskViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            try {
-                taskUseCase.updateTask(id, taskParam.toDomain())
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = null,
-                        isTaskSaved = true,
-                    )
+            taskUseCase.updateTask(id, taskParam.toDomain())
+                .catch {
+                    Logger.error(it)
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                            isTaskDeleted = false,
+                            isTaskSaved = false
+                        )
+                    }
                 }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                        isTaskDeleted = false,
-                        isTaskSaved = false
-                    )
+                .collect {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = null,
+                            isTaskSaved = true,
+                        )
+                    }
                 }
-            }
         }
     }
 }

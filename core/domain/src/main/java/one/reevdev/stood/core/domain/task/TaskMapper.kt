@@ -69,20 +69,24 @@ fun Category.toEntity(): CategoryEntity = CategoryEntity(
 )
 
 fun String.toTaskTime(): TaskTime {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
-    val date: Date? = inputFormat.parse(this)
+    try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+        val date: Date? = inputFormat.parse(this)
 
-    val outputTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    val formattedTime = date?.let { outputTimeFormat.format(it) }.orEmpty()
+        val outputTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val formattedTime = date?.let { outputTimeFormat.format(it) }.orEmpty()
 
-    val outputDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
-    val formattedDate = date?.let { outputDateFormat.format(it) }.orEmpty()
+        val outputDateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+        val formattedDate = date?.let { outputDateFormat.format(it) }.orEmpty()
 
-    return TaskTime(
-        this,
-        formattedTime,
-        formattedDate
-    )
+        return TaskTime(
+            this,
+            formattedTime,
+            formattedDate
+        )
+    } catch (e: Exception) {
+        return TaskTime("2024-01-01T10:00:00Z", "12.00", "27 November 2001")
+    }
 }
 
 fun mapToApiString(hour: String, date: String): String {

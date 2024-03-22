@@ -68,7 +68,7 @@ class AuthDataStore @Inject constructor(
         return encryptedToken.decrypt()
     }
 
-    private fun setEncryptedToken(token: String): ByteArray {
-        return if (token.isEmpty()) emptyByteArray() else token.encrypt()
+    private fun setEncryptedToken(token: String) {
+        encryptedToken = if (token.isEmpty()) emptyByteArray() else token.encrypt()
     }
 }

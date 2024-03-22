@@ -1,21 +1,20 @@
 package one.reevdev.stood.core.data.repository.task
 
-import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.cosmoe.utils.orDefault
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
-import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryResponse
-import one.reevdev.stood.core.data.datasource.remote.task.model.TaskResponse
+import one.reevdev.stood.core.data.datasource.remote.task.model.CategoryItem
+import one.reevdev.stood.core.data.datasource.remote.task.model.TaskItem
 import one.reevdev.stood.core.data.datasource.remote.task.param.TaskParam
 
-fun CategoryResponse.toEntity() = CategoryEntity(
+fun CategoryItem.toEntity() = CategoryEntity(
     id = id.toString(),
     name = name.orEmpty(),
-    color = emptyString(),
+    color = "#FFFFFF",
 )
 
-fun TaskResponse.toEntity() = TaskEntity(
+fun TaskItem.toEntity() = TaskEntity(
     id = id.toString(),
     title = title.orEmpty(),
     priority = priority.orDefault(2),

@@ -70,26 +70,46 @@ class AddTaskViewModel @Inject constructor(
     fun addTask(taskParams: TaskUiParams) {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            try {
-                taskUseCase.createTask(
-                    taskParams.toDomain()
-                )
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = null,
-                        isTaskSaved = true
+            taskUseCase.createTask(taskParams.toDomain())
+                .catch { throwable ->
+                    Logger.error(throwable)
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong", // Todo: To be replaced by API message
+                            isTaskSaved = false
+                        )
+                    }
+                }
+                .collect { data ->
+                    data.handleResource(
+                        onSuccess = {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    isTaskSaved = true
+                                )
+                            }
+                        },
+                        onLoading = {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true,
+                                    errorMessage = null,
+                                )
+                            }
+                        },
+                        onFailure = { throwable, message ->
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = message,
+                                )
+                            }
+                        }
                     )
                 }
-            } catch(e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                        isTaskSaved = false
-                    )
-                }
-            }
         }
     }
 }

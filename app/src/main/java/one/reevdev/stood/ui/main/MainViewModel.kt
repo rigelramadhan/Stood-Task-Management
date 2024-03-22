@@ -1,4 +1,4 @@
-package one.reevdev.stood.main
+package one.reevdev.stood.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
