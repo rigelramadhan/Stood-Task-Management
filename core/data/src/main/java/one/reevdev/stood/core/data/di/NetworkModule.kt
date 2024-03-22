@@ -1,11 +1,15 @@
 package one.reevdev.stood.core.data.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import one.reevdev.stood.core.data.StoodAuthenticator
 import one.reevdev.stood.core.data.datasource.remote.ApiConfig
 import one.reevdev.stood.core.data.datasource.remote.AuthInterceptor
 import one.reevdev.stood.core.data.datasource.remote.auth.AuthApiService
@@ -20,12 +24,18 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitClient(authInterceptor: AuthInterceptor): Retrofit {
+    fun provideRetrofitClient(
+        @ApplicationContext context: Context,
+        authInterceptor: AuthInterceptor,
+        authenticator: StoodAuthenticator,
+    ): Retrofit {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(ChuckerInterceptor(context))
             .addInterceptor(authInterceptor)
+            .authenticator(authenticator)
             .build()
         return Retrofit.Builder()
             .baseUrl(ApiConfig.BASE_URL)

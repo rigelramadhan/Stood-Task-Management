@@ -1,4 +1,4 @@
-package one.reevdev.stood.core.data.utils
+package one.reevdev.stood.core.data.utils.constants
 
 object AppConstants {
     init {

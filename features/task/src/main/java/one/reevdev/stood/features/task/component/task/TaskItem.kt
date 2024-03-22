@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import one.reevdev.cosmoe.utils.toComposeColor
 import one.reevdev.stood.core.domain.task.model.Category
 import one.reevdev.stood.core.domain.task.model.Task
+import one.reevdev.stood.core.domain.task.model.TaskPeriodic
 import one.reevdev.stood.core.domain.task.model.TaskPriority
 import one.reevdev.stood.core.domain.task.model.TaskStatus
 import one.reevdev.stood.core.domain.task.model.TaskTime
@@ -206,7 +207,8 @@ fun TaskItemPreview() {
                     priority = TaskPriority.Normal,
                     time = TaskTime("", "20.24", "24 January 2024"),
                     category = Category("", "Work", "#2ff2de"),
-                    status = TaskStatus.ToDo
+                    status = TaskStatus.ToDo,
+                    periodic = TaskPeriodic.None
                 ),
                 navigateToDetail = {},
                 onStatusChange = {}

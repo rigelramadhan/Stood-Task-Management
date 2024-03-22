@@ -36,6 +36,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    externalNativeBuild {
+        cmake {
+            path = file("CMakeLists.txt")
+            version = "3.10.2"
+        }
+    }
 }
 
 dependencies {
@@ -68,6 +74,13 @@ dependencies {
     implementation(libs.retrofit2.retrofit2)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.okhttp3.logging.interceptor)
+
+    // Preference DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Chucker
+    debugImplementation(libs.chucker.library)
+    releaseImplementation(libs.chucker.library.no.op)
 
     // Ktor - To be used in the future
     implementation(libs.ktor.client.core)

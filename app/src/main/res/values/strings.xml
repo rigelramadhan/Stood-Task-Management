@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Stood</string>
     <string name="title_task">Task</string>
+    <string name="content_description_logo_image">Logo image</string>
 </resources>

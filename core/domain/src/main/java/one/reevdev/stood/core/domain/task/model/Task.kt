@@ -6,7 +6,8 @@ data class Task(
     val priority: TaskPriority,
     val time: TaskTime,
     val category: Category,
-    val status: TaskStatus
+    val status: TaskStatus,
+    val periodic: TaskPeriodic,
 )
 data class TaskTime(
     val fullISOFormat: String,

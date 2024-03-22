@@ -6,10 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import one.reevdev.cosmoe.ui.compose.UiState
+import one.reevdev.cosmoe.utils.Logger
+import one.reevdev.cosmoe.utils.resource.handleResource
 import one.reevdev.stood.core.domain.task.TaskUseCase
 import one.reevdev.stood.core.domain.task.model.Task
 import one.reevdev.stood.core.domain.task.model.TaskParams
@@ -34,39 +35,47 @@ class TaskViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val todoTasksFlow = taskUseCase.getTaskByStatus(TaskStatus.ToDo)
-            val onGoingTasksFlow = taskUseCase.getTaskByStatus(TaskStatus.OnGoing)
-            val doneTasksFlow = taskUseCase.getTaskByStatus(TaskStatus.Done)
-
-            combine(
-                todoTasksFlow,
-                onGoingTasksFlow,
-                doneTasksFlow
-            ) { todoTasks, onGoingTasks, doneTasks ->
-                TaskUiState(
-                    isLoading = false,
-                    errorMessage = null,
-                    todoTasks = todoTasks,
-                    onGoingTasks = onGoingTasks,
-                    doneTasks = doneTasks
-                )
-            }.catch { error ->
-                if (error is IOException) {
-                    onUnauthorized?.invoke()
-                } else {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = "Something went wrong" // TODO: To be replaced by API error message
+            taskUseCase.getTasks()
+                .catch { error ->
+                    if (error is IOException) {
+                        onUnauthorized?.invoke()
+                    } else {
+                        Logger.error(error)
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = "Something went wrong" // TODO: To be replaced by API error message
+                            )
+                        }
+                    }
+                }.collect { data ->
+                    _uiState.update { uiState ->
+                        data.handleResource(
+                            onSuccess = { allTask ->
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                    todoTasks = allTask.filter { it.status == TaskStatus.ToDo },
+                                    onGoingTasks = allTask.filter { it.status == TaskStatus.OnGoing },
+                                    doneTasks = allTask.filter { it.status == TaskStatus.Done },
+                                )
+                            },
+                            onFailure = { throwable, message ->
+                                Logger.error(throwable)
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = message,
+                                )
+                            },
+                            onLoading = {
+                                uiState.copy(
+                                    isLoading = true
+                                )
+                            },
                         )
                     }
+                    getDate()
                 }
-            }.collect { uiState ->
-                _uiState.update {
-                    uiState
-                }
-                getDate()
-            }
         }
     }
 
@@ -86,26 +95,43 @@ class TaskViewModel @Inject constructor(
     fun updateTask(task: Task) {
         _uiState.update { it.copy(isLoading = true) }
         val taskParam = TaskParams(
-            task.title, task.priority, task.time, task.category.id, task.status
+            task.title, task.priority, task.time, task.category.id, task.status, task.periodic
         )
 
         viewModelScope.launch {
-            try {
-                taskUseCase.updateTask(task.id, taskParam)
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = null,
-                    )
+            taskUseCase.updateTask(task.id, taskParam)
+                .catch { throwable ->
+                    _uiState.update {
+                        Logger.error(throwable)
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Something went wrong.", // Todo: To be replaced by API message
+                        )
+                    }
+                }.collect { data ->
+                    _uiState.update { uiState ->
+                        data.handleResource(
+                            onSuccess = {
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = null,
+                                )
+                            },
+                            onFailure = { throwable, message ->
+                                Logger.error(throwable)
+                                uiState.copy(
+                                    isLoading = false,
+                                    errorMessage = message,
+                                )
+                            },
+                            onLoading = {
+                                uiState.copy(
+                                    isLoading = true
+                                )
+                            },
+                        )
+                    }
                 }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Something went wrong", // Todo: To be replaced by API message
-                    )
-                }
-            }
         }
     }
 

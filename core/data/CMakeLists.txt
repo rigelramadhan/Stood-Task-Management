@@ -7,20 +7,5 @@ project("Stood")
 add_library(
         native-lib
         SHARED
-        native-lib.cpp
-)
-
-# Include directories if needed
-# include_directories(path/to/include)
-
-# Find the Android log library
-find_library(
-        log-lib
-        log
-)
-
-# Link your native library with necessary libraries
-target_link_libraries(
-        native-lib
-        ${log-lib}
+        src/main/jni/native-lib.cpp
 )

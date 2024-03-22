@@ -54,6 +54,7 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":core")))
+    implementation(project(mapOf("path" to ":core:domain")))
     implementation(project(mapOf("path" to ":features:task")))
     implementation(project(":cosmoe"))
     implementation(project(":features:common"))
@@ -85,6 +86,8 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.ui.test.manifest)
+    debugImplementation(libs.chucker.library)
+    releaseImplementation(libs.chucker.library.no.op)
 }
 
 kapt {

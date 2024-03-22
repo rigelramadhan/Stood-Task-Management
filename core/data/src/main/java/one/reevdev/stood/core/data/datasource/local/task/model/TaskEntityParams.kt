@@ -5,5 +5,6 @@ data class TaskEntityParams(
     val priority: Int,
     val time: String,
     val categoryId: String,
-    val status: String
+    val status: String,
+    val periodic: String,
 )

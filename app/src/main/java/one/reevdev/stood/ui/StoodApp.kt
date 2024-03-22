@@ -1,7 +1,11 @@
 package one.reevdev.stood.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -16,18 +20,33 @@ import one.reevdev.stood.features.task.navigation.navigateToTask
 import one.reevdev.stood.features.task.navigation.taskAddTaskScreen
 import one.reevdev.stood.features.task.navigation.taskDetailScreen
 import one.reevdev.stood.features.task.navigation.taskScreen
+import one.reevdev.stood.navigation.splashScreen
+import one.reevdev.stood.ui.main.MainViewModel
 
 @Composable
 fun StoodApp(
     modifier: Modifier = Modifier,
+    viewModel: MainViewModel = hiltViewModel(),
     startDestination: String = TaskScreens.Task.route,
     navController: NavHostController = rememberNavController()
 ) {
+    val isUnauthorized by viewModel.isUnauthorized.collectAsStateWithLifecycle()
+    LaunchedEffect(true) {
+        viewModel.checkToken()
+    }
+
+    if (isUnauthorized) {
+        navController.navigateToLogin()
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
     ) {
+        // Splash
+        splashScreen { navController.navigateToTask() }
+
         // Task
         taskScreen(
             onTaskClick = { navController.navigateToDetail(it) },
