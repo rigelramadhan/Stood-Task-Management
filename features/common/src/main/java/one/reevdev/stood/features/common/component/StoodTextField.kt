@@ -49,8 +49,8 @@ fun StoodTextField(
             imeAction = imeAction,
         ),
         colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = StoodTheme.colors.background,
-            focusedContainerColor = StoodTheme.colors.background,
+            unfocusedContainerColor = StoodTheme.colors.surface,
+            focusedContainerColor = StoodTheme.colors.surface,
             unfocusedIndicatorColor = StoodTheme.colors.primaryUnfocused,
             unfocusedLabelColor = StoodTheme.colors.primaryUnfocused,
             unfocusedTextColor = StoodTheme.colors.textDisabled,

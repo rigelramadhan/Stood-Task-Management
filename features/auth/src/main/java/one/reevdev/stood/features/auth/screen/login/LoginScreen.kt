@@ -46,7 +46,7 @@ fun LoginScreen(
 ) {
     Column(
         modifier = modifier
-            .background(color = StoodTheme.colors.background)
+            .background(color = StoodTheme.colors.surface)
             .fillMaxSize()
             .padding(16.dp),
     ) {

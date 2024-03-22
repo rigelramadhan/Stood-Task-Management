@@ -84,7 +84,7 @@ fun TaskScreen(
                     StatusFilterSelector(
                         modifier = Modifier
                             .padding(bottom = 16.dp),
-                        statusList = TaskStatus.values().toList(),
+                        statusList = TaskStatus.entries,
                         isSelectedStatus = { uiState.filter == it },
                         onStatusSelect = onStatusSelect
                     )
