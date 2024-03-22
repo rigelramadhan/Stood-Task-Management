@@ -6,5 +6,5 @@ import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 data class CategoryListResponse(
 
 	@field:SerializedName("data")
-	val data: List<CategoryResponse>
+	val data: List<CategoryItem>
 ) : BaseStoodResponse()

@@ -20,7 +20,8 @@ import one.reevdev.stood.features.task.navigation.navigateToTask
 import one.reevdev.stood.features.task.navigation.taskAddTaskScreen
 import one.reevdev.stood.features.task.navigation.taskDetailScreen
 import one.reevdev.stood.features.task.navigation.taskScreen
-import one.reevdev.stood.main.MainViewModel
+import one.reevdev.stood.navigation.splashScreen
+import one.reevdev.stood.ui.main.MainViewModel
 
 @Composable
 fun StoodApp(
@@ -43,6 +44,9 @@ fun StoodApp(
         startDestination = startDestination,
         modifier = modifier
     ) {
+        // Splash
+        splashScreen { navController.navigateToTask() }
+
         // Task
         taskScreen(
             onTaskClick = { navController.navigateToDetail(it) },

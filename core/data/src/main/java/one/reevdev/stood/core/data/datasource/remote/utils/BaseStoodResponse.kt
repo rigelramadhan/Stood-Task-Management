@@ -2,7 +2,7 @@ package one.reevdev.stood.core.data.datasource.remote.utils
 
 import com.google.gson.annotations.SerializedName
 
-abstract class BaseStoodResponse(
+open class BaseStoodResponse(
 
     @field:SerializedName("metadata")
     val metadata: Metadata? = null,

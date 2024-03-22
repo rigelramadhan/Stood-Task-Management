@@ -6,5 +6,5 @@ import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 data class TaskListResponse(
 
 	@field:SerializedName("data")
-	val data: List<TaskResponse>
+	val data: List<TaskItem>
 ) : BaseStoodResponse()

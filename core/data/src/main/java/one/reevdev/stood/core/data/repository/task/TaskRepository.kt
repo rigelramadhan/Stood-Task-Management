@@ -8,13 +8,11 @@ import one.reevdev.cosmoe.utils.orDefault
 import one.reevdev.cosmoe.utils.resource.Resource
 import one.reevdev.stood.core.data.datasource.local.task.TaskLocalDataSource
 import one.reevdev.stood.core.data.datasource.local.task.model.CategoryEntity
-import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntity
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskEntityParams
 import one.reevdev.stood.core.data.datasource.local.task.model.TaskWithCategory
 import one.reevdev.stood.core.data.datasource.remote.task.TaskRemoteDataSource
 import one.reevdev.stood.core.data.datasource.remote.task.param.CategoryParam
 import one.reevdev.stood.core.data.utils.networkBoundResource
-import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,7 +42,7 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getTaskById(id).first()
         },
         saveFetchResult = { response ->
-            localDataSource.insertTask(response.toEntity())
+            localDataSource.insertTask(response.data.toEntity())
         }
     )
 
@@ -53,20 +51,6 @@ class TaskRepository @Inject constructor(
     }
 
     override fun createTask(taskParams: TaskEntityParams): Flow<Resource<String>> = flow {
-        with(taskParams) {
-            val entity = TaskEntity(
-                id = "${Calendar.getInstance().timeInMillis}task-$priority",
-                title = title,
-                priority = priority,
-                time = time,
-                categoryId = categoryId,
-                status = status,
-                periodic = periodic
-            )
-            localDataSource.insertTask(
-                entity
-            )
-        }
         try {
             val request = remoteDataSource.createTask(taskParams.toRequestParams()).first()
             emit(Resource.Success(request.message?.body.orEmpty()))
@@ -126,7 +110,7 @@ class TaskRepository @Inject constructor(
             remoteDataSource.getCategoryById(id.toIntOrNull().orDefault(0)).first()
         },
         saveFetchResult = {
-            localDataSource.insertCategory(it.toEntity())
+            localDataSource.insertCategory(it.data.toEntity())
         }
     )
 }

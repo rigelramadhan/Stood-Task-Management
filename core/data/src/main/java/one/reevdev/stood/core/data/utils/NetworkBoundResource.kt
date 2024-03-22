@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import one.reevdev.cosmoe.utils.Logger
 import one.reevdev.cosmoe.utils.resource.Resource
 
 inline fun <ResultType, RequestType> networkBoundResource(
@@ -36,5 +37,6 @@ inline fun <ResultType, RequestType> networkBoundResource(
         query().map { Resource.Error(throwable, throwable.message) }
     }
 
+    Logger.debugAsync { resource.firstOrNull().toString() }
     emitAll(resource)
 }

@@ -11,6 +11,10 @@ object Logger {
         Log.d(TAG_DEBUG, log())
     }
 
+    suspend fun debugAsync(log: suspend () -> String) {
+        Log.d(TAG_DEBUG, log())
+    }
+
     fun error(log: () -> String) {
         Log.e(TAG_ERROR, log())
     }

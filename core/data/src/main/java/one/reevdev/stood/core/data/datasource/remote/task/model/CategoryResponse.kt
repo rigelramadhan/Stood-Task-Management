@@ -5,6 +5,12 @@ import one.reevdev.stood.core.data.datasource.remote.utils.BaseStoodResponse
 
 data class CategoryResponse(
 
+    @field:SerializedName("data")
+    val data: CategoryItem
+
+) : BaseStoodResponse()
+
+data class CategoryItem(
     @field:SerializedName("name")
     val name: String? = null,
 
@@ -13,4 +19,4 @@ data class CategoryResponse(
 
     @field:SerializedName("status")
     val status: Int? = null,
-) : BaseStoodResponse()
+)
