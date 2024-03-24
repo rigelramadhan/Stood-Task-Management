@@ -61,7 +61,7 @@ fun RegisterScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = StoodTheme.colors.background)
+            .background(color = StoodTheme.colors.surface)
             .padding(16.dp),
     ) {
         Spacer(modifier = Modifier.height(28.dp))

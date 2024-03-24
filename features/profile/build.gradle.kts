@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":core:domain")))
+    implementation(project(":features:common"))
     implementation(project(":cosmoe"))
 
     implementation(libs.androidx.material3.android)

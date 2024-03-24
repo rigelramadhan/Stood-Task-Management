@@ -16,7 +16,7 @@ import one.reevdev.stood.features.common.theme.StoodTheme
 fun StoodText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = StoodTheme.colors.textColor,
+    color: Color = StoodTheme.colors.onSurface,
     fontWeight: FontWeight? = null,
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
