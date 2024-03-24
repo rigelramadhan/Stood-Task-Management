@@ -1,9 +1,10 @@
-package one.reevdev.stood.features.common.component
+package one.reevdev.stood.features.common.component.buttons
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import one.reevdev.stood.features.common.component.texts.StoodText
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable

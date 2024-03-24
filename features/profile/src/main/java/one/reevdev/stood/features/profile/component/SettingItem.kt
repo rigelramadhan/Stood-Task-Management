@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import one.reevdev.stood.features.common.component.StoodText
+import one.reevdev.stood.features.common.component.texts.StoodText
 import one.reevdev.stood.features.common.theme.StoodTheme
 import one.reevdev.stood.features.profile.R
 

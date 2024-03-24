@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.common.component
+package one.reevdev.stood.features.common.component.texts
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

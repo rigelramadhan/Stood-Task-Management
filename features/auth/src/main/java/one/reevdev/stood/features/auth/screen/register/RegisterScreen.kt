@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.sp
 import one.reevdev.cosmoe.utils.emptyString
 import one.reevdev.stood.features.auth.R
 import one.reevdev.stood.features.common.R.font
-import one.reevdev.stood.features.common.component.StoodButton
-import one.reevdev.stood.features.common.component.StoodButtonText
-import one.reevdev.stood.features.common.component.StoodText
-import one.reevdev.stood.features.common.component.StoodTextField
+import one.reevdev.stood.features.common.component.buttons.StoodButton
+import one.reevdev.stood.features.common.component.buttons.StoodButtonText
+import one.reevdev.stood.features.common.component.texts.StoodText
+import one.reevdev.stood.features.common.component.texts.StoodTextField
 import one.reevdev.stood.features.common.theme.StoodTheme
 
 @Composable

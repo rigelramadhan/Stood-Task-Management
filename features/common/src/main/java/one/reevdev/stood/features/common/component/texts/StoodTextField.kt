@@ -1,4 +1,4 @@
-package one.reevdev.stood.features.common.component
+package one.reevdev.stood.features.common.component.texts
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActionScope
